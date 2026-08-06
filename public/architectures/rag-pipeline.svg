@@ -1,0 +1,79 @@
+<svg viewBox="0 0 1280 448" xmlns="http://www.w3.org/2000/svg" font-family="'Pretendard','Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif">
+  <defs>
+    <marker id="arrowTeal" viewBox="0 0 10 10" markerWidth="8" markerHeight="8" refX="6.5" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#0E9F8E"/></marker>
+    <marker id="arrowMon" viewBox="0 0 10 10" markerWidth="8" markerHeight="8" refX="6.5" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#7E57C2"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="448" fill="#FBFCFE"/>
+
+  <text x="640" y="42" text-anchor="middle" font-size="24" font-weight="700" fill="#1c2733">RAG 질의 파이프라인 — 검색 · 리랭크 · 생성</text>
+  <text x="640" y="66" text-anchor="middle" font-size="13.5" fill="#7a8694">LCEL 직접 조합 — top_k=20 검색 → top_n=5 리랭크 → 근거 기반 생성</text>
+
+  <!-- 검색 도구 band (에이전트가 호출하는 단일 도구) -->
+  <rect x="283" y="138" width="459" height="212" rx="16" fill="#F4F6F9" stroke="#DCE3EA" stroke-width="1.2"/>
+  <text x="512" y="162" text-anchor="middle" font-size="13" font-weight="700" fill="#5C6B7A">검색 도구 — 에이전트가 호출</text>
+
+  <!-- 질문 -->
+  <rect x="40" y="170" width="180" height="140" rx="14" fill="#EDF0F4" stroke="#5D6D7E" stroke-width="2"/>
+  <text x="130" y="222" text-anchor="middle" font-size="19" font-weight="700" fill="#3E4C5B">질문</text>
+  <text x="130" y="252" text-anchor="middle" font-size="12.5" fill="#5C6B7A">직원 질의</text>
+  <text x="130" y="274" text-anchor="middle" font-size="12.5" fill="#5C6B7A">멀티턴 히스토리</text>
+
+  <!-- 벡터 검색 -->
+  <rect x="295" y="174" width="180" height="136" rx="14" fill="#E4F4EC" stroke="#2D9C6F" stroke-width="2"/>
+  <text x="385" y="214" text-anchor="middle" font-size="19" font-weight="700" fill="#1F6B4C">벡터 검색</text>
+  <text x="385" y="244" text-anchor="middle" font-size="12.5" fill="#5C6B7A">멀티쿼리 확장</text>
+  <text x="385" y="266" text-anchor="middle" font-size="12.5" fill="#5C6B7A">bge-m3 질의 임베딩</text>
+  <text x="385" y="288" text-anchor="middle" font-size="12.5" fill="#5C6B7A">pgvector top_k=20</text>
+  <text x="385" y="336" text-anchor="middle" font-size="12" font-weight="600" fill="#2C8C5A">recall — 넓게 모은다</text>
+
+  <!-- 리랭크 -->
+  <rect x="550" y="174" width="180" height="136" rx="14" fill="#EFEAF8" stroke="#7E57C2" stroke-width="2"/>
+  <text x="640" y="214" text-anchor="middle" font-size="19" font-weight="700" fill="#5B3F94">리랭크</text>
+  <text x="640" y="244" text-anchor="middle" font-size="12.5" fill="#5C6B7A">bge-reranker-v2-m3</text>
+  <text x="640" y="266" text-anchor="middle" font-size="12.5" fill="#5C6B7A">top_n=5 컷</text>
+  <text x="640" y="288" text-anchor="middle" font-size="12.5" fill="#5C6B7A">임계값 미달 제외</text>
+  <text x="640" y="336" text-anchor="middle" font-size="12" font-weight="600" fill="#6A4399">precision — 정밀하게 남긴다</text>
+
+  <!-- 컨텍스트 조립 -->
+  <rect x="805" y="170" width="180" height="140" rx="14" fill="#DFF2F0" stroke="#0E9F8E" stroke-width="2"/>
+  <text x="895" y="222" text-anchor="middle" font-size="19" font-weight="700" fill="#0A6B60">컨텍스트 조립</text>
+  <text x="895" y="252" text-anchor="middle" font-size="12.5" fill="#5C6B7A">[n] 출처 인용번호 부여</text>
+  <text x="895" y="274" text-anchor="middle" font-size="12.5" fill="#5C6B7A">중복 청크 병합</text>
+
+  <!-- 생성 -->
+  <rect x="1060" y="170" width="180" height="140" rx="14" fill="#EFEAF8" stroke="#7E57C2" stroke-width="2"/>
+  <text x="1150" y="222" text-anchor="middle" font-size="19" font-weight="700" fill="#5B3F94">생성</text>
+  <text x="1150" y="252" text-anchor="middle" font-size="12.5" fill="#5C6B7A">Qwen3 (vLLM)</text>
+  <text x="1150" y="274" text-anchor="middle" font-size="12.5" fill="#5C6B7A">근거 없으면 안내 문구</text>
+
+  <!-- 흐름 화살표 -->
+  <path d="M220,240 H289" fill="none" stroke="#0E9F8E" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <text x="257" y="226" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0A6B60">검색 강제</text>
+  <text x="257" y="260" text-anchor="middle" font-size="10.5" fill="#0A6B60">strict 첫 턴</text>
+
+  <path d="M475,240 H544" fill="none" stroke="#0E9F8E" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <text x="512" y="226" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0A6B60">후보 20건</text>
+
+  <path d="M730,240 H799" fill="none" stroke="#0E9F8E" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <text x="767" y="226" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0A6B60">상위 5건</text>
+
+  <path d="M985,240 H1054" fill="none" stroke="#0E9F8E" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <text x="1022" y="226" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0A6B60">근거 컨텍스트</text>
+
+  <!-- 에이전트 재검색 루프 -->
+  <path d="M1150,170 V128 Q1150,116 1138,116 H524 Q512,116 512,124 V132" fill="none" stroke="#7E57C2" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#arrowMon)"/>
+  <text x="831" y="108" text-anchor="middle" font-size="11.5" font-weight="600" fill="#6A4399">재검색 — 근거 부족 시 에이전트가 검색 도구 재호출</text>
+
+  <!-- SSE 응답 -->
+  <path d="M1150,310 V352 Q1150,364 1138,364 H142 Q130,364 130,352 V316" fill="none" stroke="#0E9F8E" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <text x="640" y="382" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0A6B60">SSE 스트리밍 — 답변 토큰 · [n] 출처 각주</text>
+
+  <!-- Legend -->
+  <line x1="300" y1="418" x2="340" y2="418" stroke="#0E9F8E" stroke-width="2.5" marker-end="url(#arrowTeal)"/>
+  <text x="347" y="422" font-size="12.5" fill="#0B8576">질의 · 응답 흐름</text>
+  <line x1="520" y1="418" x2="560" y2="418" stroke="#7E57C2" stroke-width="2.2" stroke-dasharray="6 5" marker-end="url(#arrowMon)"/>
+  <text x="567" y="422" font-size="12.5" fill="#6A4399">에이전트 재검색 루프</text>
+  <rect x="770" y="409" width="16" height="16" rx="4" fill="#EFEAF8" stroke="#7E57C2" stroke-width="1.5"/>
+  <text x="794" y="422" font-size="12.5" fill="#6A4399">사내 vLLM 모델</text>
+</svg>

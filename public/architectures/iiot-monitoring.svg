@@ -1,0 +1,77 @@
+<svg viewBox="0 0 1200 550" xmlns="http://www.w3.org/2000/svg" font-family="'Pretendard','Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="8" markerHeight="8" refX="6.5" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#6B7683"/></marker>
+    <marker id="arrowAccent" viewBox="0 0 10 10" markerWidth="8" markerHeight="8" refX="6.5" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#E8743B"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="550" fill="#FBFCFE"/>
+
+  <text x="600" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#1c2733">산업 IoT 데이터 수집 · 시각화 아키텍처</text>
+  <text x="600" y="60" text-anchor="middle" font-size="13.5" fill="#7a8694">OPC UA 수집 → TimescaleDB 시계열 최적화 → Grafana 통합 관제</text>
+
+  <!-- Zone bands -->
+  <rect x="24"  y="84" width="320" height="400" rx="16" fill="#EAF4FB" stroke="#B6D9F0" stroke-width="1.2"/>
+  <rect x="364" y="84" width="520" height="400" rx="16" fill="#F1ECFA" stroke="#CDBCEC" stroke-width="1.2"/>
+  <rect x="904" y="84" width="272" height="400" rx="16" fill="#EAF7EF" stroke="#BBE3CB" stroke-width="1.2"/>
+
+  <text x="184"  y="114" text-anchor="middle" font-size="15" font-weight="700" fill="#2E6B96">현장 · Edge</text>
+  <text x="624"  y="114" text-anchor="middle" font-size="15" font-weight="700" fill="#6A4D9E">클라우드 · Cloud</text>
+  <text x="1040" y="114" text-anchor="middle" font-size="15" font-weight="700" fill="#2C8C5A">사용자 · User</text>
+
+  <!-- IoT 센서 -->
+  <rect x="52" y="140" width="128" height="100" rx="14" fill="#E9F2FA" stroke="#2E86C1" stroke-width="2"/>
+  <text x="116" y="184" text-anchor="middle" font-size="17" font-weight="700" fill="#1D5C8A">IoT 센서</text>
+  <text x="116" y="206" text-anchor="middle" font-size="12" fill="#5C6B7A">Sensors</text>
+
+  <!-- PLC -->
+  <rect x="196" y="140" width="120" height="100" rx="14" fill="#E4EEF8" stroke="#1F6FB0" stroke-width="2"/>
+  <text x="256" y="184" text-anchor="middle" font-size="17" font-weight="700" fill="#174F80">PLC</text>
+  <text x="256" y="206" text-anchor="middle" font-size="12" fill="#5C6B7A">Controllers</text>
+
+  <!-- 엣지 서버 -->
+  <rect x="72" y="336" width="224" height="112" rx="14" fill="#E2F1F4" stroke="#117A8B" stroke-width="2"/>
+  <text x="184" y="376" text-anchor="middle" font-size="19" font-weight="700" fill="#0C5560">현장 엣지 서버</text>
+  <text x="184" y="400" text-anchor="middle" font-size="13" fill="#5C6B7A">수집 · OPC UA 변환</text>
+  <text x="184" y="421" text-anchor="middle" font-size="12.5" fill="#5C6B7A">Edge Server</text>
+
+  <!-- TimescaleDB -->
+  <rect x="404" y="190" width="240" height="190" rx="14" fill="#E4F4EC" stroke="#2D9C6F" stroke-width="2"/>
+  <text x="524" y="230" text-anchor="middle" font-size="20" font-weight="700" fill="#1F6B4C">TimescaleDB</text>
+  <text x="524" y="254" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1F6B4C">시계열 저장 · 클라우드</text>
+  <text x="524" y="294" text-anchor="middle" font-size="12.5" fill="#5C6B7A">하이퍼테이블 · 하이퍼함수</text>
+  <text x="524" y="320" text-anchor="middle" font-size="12.5" fill="#5C6B7A">연속집계 (Cagg) 자동 갱신</text>
+  <text x="524" y="346" text-anchor="middle" font-size="12.5" fill="#5C6B7A">압축 · 파티셔닝 정책</text>
+
+  <!-- Grafana -->
+  <rect x="692" y="224" width="176" height="120" rx="14" fill="#FBEEE5" stroke="#E8743B" stroke-width="2"/>
+  <text x="780" y="264" text-anchor="middle" font-size="19" font-weight="700" fill="#A34E1E">Grafana</text>
+  <text x="780" y="288" text-anchor="middle" font-size="13" font-weight="600" fill="#A34E1E">통합 대시보드</text>
+  <text x="780" y="310" text-anchor="middle" font-size="12.5" fill="#5C6B7A">실시간 관제 · 알람</text>
+
+  <!-- 사용자 -->
+  <rect x="932" y="224" width="216" height="120" rx="14" fill="#EDF0F4" stroke="#5D6D7E" stroke-width="2"/>
+  <text x="1040" y="264" text-anchor="middle" font-size="19" font-weight="700" fill="#3E4C5B">사용자</text>
+  <text x="1040" y="288" text-anchor="middle" font-size="13" fill="#5C6B7A">Web Browser</text>
+  <text x="1040" y="310" text-anchor="middle" font-size="12.5" fill="#5C6B7A">모니터링 · 분석</text>
+
+  <!-- Arrows -->
+  <path d="M116,240 V300 Q116,312 128,312 H172 Q184,312 184,324 V332" fill="none" stroke="#6B7683" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M256,240 V300 Q256,312 244,312 H196 Q184,312 184,324 V332" fill="none" stroke="#6B7683" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="114" y="258" width="140" height="26" rx="13" fill="#ffffff" stroke="#9CC9E8" stroke-width="1.2"/>
+  <text x="184" y="275" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2E6B96">RS-232·485 / LAN</text>
+
+  <path d="M296,392 H332 Q344,392 344,380 V242 Q344,230 356,230 H398" fill="none" stroke="#6B7683" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="336" y="311" text-anchor="middle" font-size="12" font-weight="600" fill="#56606c" transform="rotate(-90 336 311)">데이터 적재</text>
+
+  <path d="M648,284 H686" fill="none" stroke="#E8743B" stroke-width="2.5" marker-end="url(#arrowAccent)"/>
+  <text x="667" y="274" text-anchor="middle" font-size="11.5" font-weight="600" fill="#c5612e">Query</text>
+
+  <path d="M868,284 H926" fill="none" stroke="#6B7683" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="897" y="274" text-anchor="middle" font-size="12" font-weight="600" fill="#56606c">대시보드 제공</text>
+
+  <!-- Legend -->
+  <line x1="440" y1="514" x2="480" y2="514" stroke="#6B7683" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="487" y="518" font-size="12.5" fill="#56606c">데이터 흐름</text>
+  <line x1="600" y1="514" x2="640" y2="514" stroke="#E8743B" stroke-width="2.5" marker-end="url(#arrowAccent)"/>
+  <text x="647" y="518" font-size="12.5" fill="#c5612e">대시보드 조회 (Query)</text>
+</svg>
