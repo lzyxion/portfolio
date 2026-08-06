@@ -138,36 +138,4 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 | | |
 | --- | --- |
 | Email | [wlsduf17@gmail.com](mailto:wlsduf17@gmail.com) |
-| Phone | [010-3126-7530](tel:+821031267530) |
 | GitHub | [github.com/leejinyeol170](https://github.com/leejinyeol170) |
-
----
-
-## 이 저장소에 대하여
-
-포트폴리오 사이트 자체의 소스 코드입니다.
-
-**기술 스택** — Vue 3 (`<script setup>`) · TypeScript · Vite · Vue Router · Tailwind CSS v4 · PrimeVue · ECharts · highlight.js
-
-```bash
-npm install
-npm run dev      # 개발 서버
-npm run build    # 타입 체크(vue-tsc) + 프로덕션 빌드 → dist/
-npm run preview  # 빌드 결과 미리보기
-```
-
-`main` 브랜치에 push하면 GitHub Actions(`.github/workflows/deploy.yml`)가 빌드 후 GitHub Pages로 배포합니다. SPA라 새로고침·직접 URL 진입을 위해 배포 단계에서 `index.html`을 `404.html`로 복사합니다.
-
-```
-src/
-├── components/
-│   ├── sections/     # Intro · Skills · Career · Projects · Contact 섹션
-│   └── ...           # 아키텍처 다이어그램, 코드 블록, 지표 바 등 공용 컴포넌트
-├── data/
-│   ├── projects/     # 프로젝트별 상세 데이터 (연차 메타 포함)
-│   └── skills.ts     # 스킬 아이콘 매핑
-├── views/            # 홈 · 프로젝트 상세 · 404
-└── router/
-
-public/architectures/  # 아키텍처 다이어그램(SVG) · 운영 화면 캡처(PNG)
-```
