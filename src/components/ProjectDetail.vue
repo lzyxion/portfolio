@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import CodeBlock from '@/components/CodeBlock.vue'
-import MetricBar from '@/components/MetricBar.vue'
+import { defineAsyncComponent } from 'vue'
 import SkillBadge from '@/components/SkillBadge.vue'
 import TechStackTabs from '@/components/TechStackTabs.vue'
 import Tabs from 'primevue/tabs'
@@ -11,6 +10,11 @@ import TabPanel from 'primevue/tabpanel'
 import ZoomableImage from '@/components/ZoomableImage.vue'
 import { type MediaItem, type Project, type TechRationale } from '@/data/projects'
 import { highlight } from '@/utils/highlight'
+
+// highlight.js와 echarts는 이 페이지 전체 번들의 대부분을 차지하지만 코드 블록과
+// 지표 차트에서만 쓰인다. 별도 청크로 떼어내 초기 로딩을 막지 않도록 지연 로딩.
+const CodeBlock = defineAsyncComponent(() => import('@/components/CodeBlock.vue'))
+const MetricBar = defineAsyncComponent(() => import('@/components/MetricBar.vue'))
 
 defineProps<{ project: Project }>()
 
