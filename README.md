@@ -2,7 +2,7 @@
 
 **이진열 · Lee Jinyeol**
 
-🔗 **https://leejinyeol170.github.io**
+🔗 **https://lzyxion.github.io/portfolio**
 
 스마트 팩토리·IIoT 도메인에서 약 50개 제조업체, 2,000여 개 센서가 연결된 시계열 데이터 플랫폼의 데이터 처리·관제 영역을 담당해 왔습니다. **시계열 데이터 최적화** · **인프라 고도화** · **표준화 파이프라인 구축**으로 시스템 안정성과 운영 효율을 개선했고, 최근에는 **사내 문서 RAG 챗봇**을 설계·구현했습니다.
 
@@ -72,7 +72,7 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 
 **기술스택** — LangChain · RAG · vLLM · pgvector · FastAPI · React · PostgreSQL · Docker
 
-[자세히 보기 →](https://leejinyeol170.github.io/projects/internal-rag-chatbot)
+[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/internal-rag-chatbot)
 
 ---
 
@@ -90,7 +90,7 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 
 **기술스택** — Airflow · dbt · FastAPI · Vue.js · Docker · Nginx · GitLab CI/CD
 
-[자세히 보기 →](https://leejinyeol170.github.io/projects/data-platform)
+[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/data-platform)
 
 ---
 
@@ -108,7 +108,7 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 
 **기술스택** — PostgreSQL · TimescaleDB · PgBouncer · Streaming Replication · Grafana · Grafana Alloy · Prometheus · VictoriaMetrics
 
-[자세히 보기 →](https://leejinyeol170.github.io/projects/infra-monitoring)
+[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/infra-monitoring)
 
 ---
 
@@ -127,7 +127,7 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 
 **기술스택** — TimescaleDB · Grafana · SQL
 
-[자세히 보기 →](https://leejinyeol170.github.io/projects/iiot-monitoring)
+[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/iiot-monitoring)
 
 ---
 
@@ -138,4 +138,4 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 | | |
 | --- | --- |
 | Email | [wlsduf17@gmail.com](mailto:wlsduf17@gmail.com) |
-| GitHub | [github.com/leejinyeol170](https://github.com/leejinyeol170) |
+| GitHub | [github.com/lzyxion](https://github.com/lzyxion) |

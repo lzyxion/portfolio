@@ -8,7 +8,7 @@ import { resolve } from 'node:path'
 const BUILD_ID = Date.now().toString()
 
 export default defineConfig({
-  base: '/',
+  base: '/portfolio/',
   plugins: [
     vue(),
     tailwindcss(),

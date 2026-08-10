@@ -16,16 +16,10 @@ const contacts: ContactItem[] = [
     href: 'mailto:wlsduf17@gmail.com',
   },
   {
-    icon: 'pi pi-phone',
-    label: 'Phone',
-    value: '010-3126-7530',
-    href: 'tel:+821031267530',
-  },
-  {
     icon: 'pi pi-github',
     label: 'GitHub',
-    value: 'github.com/leejinyeol170',
-    href: 'https://github.com/leejinyeol170',
+    value: 'github.com/lzyxion',
+    href: 'https://github.com/lzyxion',
   },
 ]
 </script>
