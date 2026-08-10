@@ -7,6 +7,7 @@ export const dataPlatform: Project = {
     year: 3,
     contribution: 100,
     contributionScope: '백엔드 · 프론트엔드 · 인프라 · 파이프라인 전담',
+    repos: ['lzyxion/dbt-sensor', 'lzyxion/sensor-gateway-portfolio'],
     tags: ['Airflow', 'dbt', 'FastAPI', 'Vue.js', 'Docker', 'Nginx', 'GitLab CI/CD'],
     summary:
       'Grafana 시각화의 한계와 파이프라인 파편화를 계기로, Airflow·dbt 표준화 파이프라인과 멀티테넌시 기반 사내 자체 관리 대시보드·확장형 API 서버를 개발해 완성한 프로젝트입니다.',

@@ -140,6 +140,8 @@ export interface Project {
   contribution?: number
   /** 본인 기여 영역에 대한 짧은 설명 (기여도 옆에 표시) */
   contributionScope?: string
+  /** 헤더에 표시되는 공개 저장소 — 'owner/name' 형식 (예: 'lzyxion/rocket-desk') */
+  repos?: string[]
   /** 문제 — 상황과 인식한 문제 */
   problem: ProblemSection
   /** 목표 — 무엇을 달성하려 했는가 */

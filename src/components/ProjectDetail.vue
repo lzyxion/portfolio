@@ -24,6 +24,11 @@ function tabLabel(title: string): string {
   return sep > 0 ? title.slice(0, sep) : title
 }
 
+function repoName(repo: string): string {
+  // 'owner/name' 에서 저장소 이름만 — 헤더 메타 줄이 길어지지 않도록 (전체 경로는 title 속성)
+  return repo.slice(repo.indexOf('/') + 1)
+}
+
 function asRationaleList(
   r: TechRationale | TechRationale[] | undefined,
 ): TechRationale[] {
@@ -57,29 +62,81 @@ function groupMedia(media: MediaItem[]): MediaGroup[] {
       <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-0 sm:text-3xl">
         {{ project.title }}
       </h1>
+      <!--
+        기간·기여도·저장소를 하나의 메타 박스로 묶는다. 세로로 나열하되 테두리가
+        본문과 끊어 줘서, 제목 아래 메타가 길게 흘러내리는 것처럼 보이지 않는다.
+        박스 스타일은 아래 '문제' 섹션 카드와 동일.
+      -->
       <div
-        class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-surface-500 dark:text-surface-400"
+        class="flex flex-col gap-2.5 rounded-md border border-surface-200 bg-surface-50/50 px-4 py-3.5 dark:border-surface-800 dark:bg-surface-900/30"
       >
-        <span class="inline-flex items-center gap-1.5">
-          <i class="pi pi-calendar text-xs" aria-hidden="true" />
-          {{ project.period }}
-        </span>
-        <span
-          v-if="project.contribution != null"
-          class="inline-flex items-center gap-1.5"
-        >
-          <i class="pi pi-user text-xs" aria-hidden="true" />
-          기여도 {{ project.contribution }}%<template v-if="project.contributionScope">
-            · {{ project.contributionScope }}</template
+        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <span
+            class="inline-flex items-center gap-1.5 text-sm text-surface-500 dark:text-surface-400"
           >
-        </span>
+            <i class="pi pi-calendar text-xs" aria-hidden="true" />
+            {{ project.period }}
+          </span>
+          <!-- 공개 저장소 — 메타 박스 우측 상단 고정 -->
+          <div
+            v-if="project.repos?.length"
+            class="flex flex-wrap gap-2"
+          >
+            <a
+              v-for="repo in project.repos"
+              :key="repo"
+              :href="`https://github.com/${repo}`"
+              target="_blank"
+              rel="noopener"
+              :title="`github.com/${repo}`"
+              class="inline-flex items-center gap-1.5 rounded-md bg-surface-900 px-2.5 py-1 text-xs font-semibold text-surface-0 transition-colors hover:bg-surface-700 dark:bg-surface-0 dark:text-surface-900 dark:hover:bg-surface-200"
+            >
+              <i class="pi pi-github text-sm" aria-hidden="true" />
+              {{ repoName(repo) }}
+              <i class="pi pi-external-link text-[10px] opacity-60" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+        <div
+          v-if="project.contribution != null"
+          class="flex flex-col gap-1.5"
+        >
+          <span class="inline-flex items-center gap-1.5 text-sm text-surface-500 dark:text-surface-400">
+            <i class="pi pi-user text-xs" aria-hidden="true" />
+            기여도
+            <strong class="font-semibold text-surface-900 dark:text-surface-0">
+              {{ project.contribution }}%
+            </strong>
+          </span>
+          <!-- 기여도를 수치만이 아니라 길이로도 읽히게 하는 얇은 게이지 -->
+          <div
+            class="h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-surface-200 dark:bg-surface-800"
+            role="progressbar"
+            :aria-valuenow="project.contribution"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            :aria-label="`기여도 ${project.contribution}%`"
+          >
+            <div
+              class="h-full rounded-full bg-primary"
+              :style="{ width: `${project.contribution}%` }"
+            />
+          </div>
+          <span
+            v-if="project.contributionScope"
+            class="text-sm text-surface-500 dark:text-surface-400"
+          >
+            {{ project.contributionScope }}
+          </span>
+        </div>
       </div>
+      <!-- mt-3: 메타 박스와 요약 사이에 여백을 둬 메타 정보와 본문을 끊어 읽게 한다 -->
       <p
         v-if="project.summary"
-        class="text-sm leading-relaxed text-surface-700 dark:text-surface-300"
+        class="mt-3 text-sm leading-relaxed text-surface-700 dark:text-surface-300"
         v-html="highlight(project.summary)"
       />
-      <div class="mt-1 flex flex-wrap gap-2">
+      <div class="mt-3 flex flex-wrap gap-2">
         <SkillBadge v-for="tag in project.tags" :key="tag" :name="tag" size="sm" />
       </div>
     </header>

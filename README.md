@@ -72,7 +72,7 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 
 **기술스택** — LangChain · RAG · vLLM · pgvector · FastAPI · React · PostgreSQL · Docker
 
-[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/internal-rag-chatbot)
+[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/internal-rag-chatbot) · 저장소 [lzyxion/rocket-desk](https://github.com/lzyxion/rocket-desk)
 
 ---
 
@@ -90,7 +90,7 @@ TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구�
 
 **기술스택** — Airflow · dbt · FastAPI · Vue.js · Docker · Nginx · GitLab CI/CD
 
-[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/data-platform)
+[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/data-platform) · 저장소 [lzyxion/dbt-sensor](https://github.com/lzyxion/dbt-sensor) · [lzyxion/sensor-gateway-portfolio](https://github.com/lzyxion/sensor-gateway-portfolio)
 
 ---
 

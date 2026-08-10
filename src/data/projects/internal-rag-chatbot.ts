@@ -7,6 +7,7 @@ export const internalRagChatbot: Project = {
     year: 4,
     contribution: 100,
     contributionScope: 'RAG 파이프라인 · 백엔드 · 프론트 · 인프라 전담',
+    repos: ['lzyxion/rocket-desk'],
     tags: ['LangChain', 'RAG', 'vLLM', 'pgvector', 'FastAPI', 'React', 'PostgreSQL', 'Docker'],
     summary:
       '외부 클라우드 LLM 을 쓸 수 없는 보안 요건 아래, 사내 GPU 서버에 자체 호스팅한 오픈 모델로 사내 문서를 근거로 답하는 RAG 챗봇을 전담 설계·구현하고 있는 프로젝트입니다.',
