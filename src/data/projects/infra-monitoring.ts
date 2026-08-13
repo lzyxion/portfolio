@@ -193,13 +193,14 @@ export const infraMonitoring: Project = {
         title: 'Agent Provisioning · Alloy 일괄 설치 스크립트',
         icon: 'pi pi-server',
         headline:
-          '업체별 내부망에 흩어진 Edge 노드에 같은 수집 에이전트를 반복 설치해야 했기 때문에, apt 저장소 등록부터 설정 생성 · 검증 · systemd 기동 · 헬스체크까지를 한 번에 처리하는 sh 스크립트로 배포 절차 자체를 표준화했습니다. 초기 Prometheus agent · Promtail 구성에서 Alloy 단일 에이전트로 전환하면서 이 스크립트도 함께 다시 썼습니다.',
-        note: [
-          '노드마다 다른 값은 환경변수로만 분리 — 스크립트 본문과 config.alloy 는 전 노드가 동일하고, remote_write 주소 · basic_auth 자격 증명 · 노드 식별 라벨만 .env 나 인라인 주입으로 넘깁니다 (우선순위: 인라인 > .env > 기본값). 비밀번호가 들어가는 /etc/default/alloy 는 640 권한으로 생성합니다.',
-          '설치를 "검증까지 끝난 상태" 로 정의 — 패키지 설치에서 멈추지 않고 alloy fmt --test 로 설정 포맷을 확인하고, systemctl is-active 와 /-/ready 헬스체크로 실제 기동까지 확인한 뒤 종료하게 해서 "설치는 됐는데 안 도는" 노드가 남지 않도록 했습니다.',
-          'Edge 시계 어긋남을 설치 전에 차단 — 시계가 틀어진 노드는 잘못된 timestamp 로 push 해서 중앙에 저장은 되지만 조회되지 않는 증상이 납니다. 설치 시작 시 timedatectl 로 NTP 동기화 상태를 확인하고, 미동기화면 활성화할지 물어보고 진행합니다.',
-          '노드당 관리 대상을 프로세스 3 → 1 로 축소 — Prometheus agent · node_exporter · Promtail 을 노드마다 따로 설치·기동하던 초기 구성을 내장 exporter 를 쓰는 Alloy 하나로 정리했고, 로그는 활용도가 낮아 수집 대상에서 제외했습니다. 이관이 끝난 노드의 기존 설치분은 별도 removal 스크립트(백업 후 서비스·바이너리·설정·계정 제거)로 걷어냈습니다.',
-        ],
+          '반복 설치가 필요한 Edge 노드의 모니터링 에이전트 배포 절차를 하나의 스크립트로 표준화했습니다.',
+        implementationCard: {
+          approach: [
+            '노드별 주소·인증 정보만 환경 변수로 주입하고, 설치·설정 생성·검증·기동·헬스체크를 하나의 흐름으로 구성했습니다.',
+            'Prometheus agent·node exporter·Promtail 구성을 Alloy 단일 에이전트로 통합했습니다.',
+          ],
+          result: '노드별 운영 대상을 3개 프로세스에서 1개로 줄이고, 설치 이후 실제 수집 가능 상태까지 일관되게 확인할 수 있게 했습니다.',
+        },
         snippets: [
           {
             title: 'alloy_agent_install.sh — 설치·검증·기동 파이프라인 (Bash)',
@@ -297,11 +298,14 @@ prometheus.scrape "host_metrics" {
         title: 'Grafana Dashboard · Alert',
         icon: 'pi pi-chart-line',
         headline:
-          'Grafana Alerting 으로 unix exporter 메트릭과 연결된 PromQL 룰을 작성해 호스트 자원 임계치를 자동 감시·알림하도록 구성했습니다.',
-        note: [
-          'Alloy 가 박은 job="integrations/unix" 라벨로 필터링해 unix exporter 메트릭에만 룰이 적용되도록 분리 — 다른 exporter 와 충돌 없이 호스트 자원만 정밀하게 감시합니다.',
-          'MemAvailable 기준 사용률 계산 — 단순 Used 가 아니라 Available 을 기준으로 캐시·버퍼까지 반영한 실제 사용 가능 메모리로 임계치를 판단해 false-positive 알람을 줄였습니다.',
-        ],
+          '호스트 자원 고갈을 실제 장애 전에 감지하도록 Grafana 알림 룰을 구성했습니다.',
+        implementationCard: {
+          approach: [
+            'Alloy의 unix exporter 메트릭만 라벨로 분리해 알림 대상과 범위를 명확히 했습니다.',
+            'MemAvailable 기준 사용률로 캐시·버퍼를 반영해 85% 초과 시 알림을 발송했습니다.',
+          ],
+          result: '메모리 고갈 전에 조치할 수 있는 운영 경로를 마련해 현장 Edge 장비 다운을 예방했습니다.',
+        },
         snippets: [
           {
             title: 'Grafana 알람 룰 — 메모리 사용률 85% 초과 감지 (PromQL)',

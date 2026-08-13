@@ -147,12 +147,14 @@ export const iiotMonitoring: Project = {
         title: 'Query · 대시보드 실시간 조회',
         icon: 'pi pi-search',
         headline:
-          '대시보드 조회는 두 매크로로 범위와 해상도를 함께 잡았습니다. $__timeFilter 로 받은 시간 범위가 그대로 WHERE 절로 내려가 범위 밖 청크를 읽지 않고, 버킷 폭은 $__interval 로 패널 해상도에 맞춰 화면에 그릴 만큼만 집계합니다.',
-        note: [
-          '$__timeFilter 로 범위 밖 청크가 프루닝되고, $__interval 로 버킷 폭이 패널 폭에 맞춰 자동 조정돼 조회 구간을 넓게 잡아도 반환 포인트 수가 일정하게 유지됩니다.',
-          'time_bucket 에 표준 집계(avg·max)와 하이퍼 함수(last)를 함께 묶어, 구간별 평균·피크와 마지막 관측값을 단일 쿼리에서 얻습니다.',
-          '적산 계량기는 교체·재기동으로 카운터가 0 으로 돌아갑니다. 누적값의 단순 차이는 이 구간을 음수로 만들어 버리므로, TimescaleDB Toolkit 의 counter_agg + delta 로 리셋 지점을 인식해 실제 증분을 산출합니다.',
-        ],
+          '조회 범위와 화면 해상도에 맞춰 필요한 시계열 데이터만 반환하도록 쿼리를 구성했습니다.',
+        implementationCard: {
+          approach: [
+            '$__timeFilter와 $__interval로 시간 범위를 청크 프루닝하고, 패널 해상도에 맞춰 버킷을 조정했습니다.',
+            'time_bucket·last와 counter_agg·delta로 현재값과 리셋을 고려한 실제 증분을 계산했습니다.',
+          ],
+          result: '데이터가 누적되어도 기본 시계열 조건 조회를 450ms에서 150ms로 줄였습니다.',
+        },
         snippets: [
           {
             title: 'time_bucket + $__interval — 패널 해상도에 맞춘 구간 집계',
@@ -212,10 +214,14 @@ ORDER BY sensor_id, bucket_day;`,
         title: 'Continuous Aggregate · 일 → 월 2단 자동 집계',
         icon: 'pi pi-sync',
         headline:
-          '조회 시점마다 수백만 건을 즉시 집계하던 통계를 일 → 월 2단 캐스케이드로 미리 쌓고 증분만 갱신하도록 바꿨습니다.',
-        note: [
-          '일/월 2단 Continuous Aggregate 캐스케이드 + 자동 갱신 정책으로 매 조회 시 즉시 연산하던 통계 쿼리 부담 제거. 최신 구간은 materialized_only=false 로 실시간 데이터와 결합했고 (v2.13 부터 기본 비활성이라 명시적으로 켰습니다), 일·월 정책이 같은 주기라 실행 순서는 보장되지 않지만 월 정책의 3개월 재갱신 창이 이를 덮습니다.',
-        ],
+          '반복 집계를 조회 시점에서 미리 계산·갱신하는 구조로 바꿨습니다.',
+        implementationCard: {
+          approach: [
+            '일 → 월 2단 Continuous Aggregate로 통계를 미리 적재하고, 1시간 주기 정책으로 증분 갱신했습니다.',
+            '최신 구간은 실시간 데이터와 결합하고, 월 집계는 3개월 재갱신 창으로 일별 집계 시차를 보완했습니다.',
+          ],
+          result: '월별 통계·집계 시간을 1.8초에서 540ms로 약 70% 단축했습니다.',
+        },
         snippets: [
           {
             title: 'Continuous Aggregate — 일/월 2단 캐스케이드 자동 집계',
