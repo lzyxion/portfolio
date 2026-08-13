@@ -1,141 +1,52 @@
-# 제조 현장의 시계열 데이터를 다루는 데이터 엔지니어
+# Data Engineering & Backend Portfolio
 
-**이진열 · Lee Jinyeol**
+**Lee Jinyeol · 이진열**
 
-🔗 **https://lzyxion.github.io/portfolio**
+제조 현장의 시계열 데이터를 바탕으로 데이터 파이프라인, 백엔드 서비스, 운영 환경을 연결해 온 엔지니어의 포트폴리오입니다.
 
-스마트 팩토리·IIoT 도메인에서 약 50개 제조업체, 2,000여 개 센서가 연결된 시계열 데이터 플랫폼의 데이터 처리·관제 영역을 담당해 왔습니다. **시계열 데이터 최적화** · **인프라 고도화** · **표준화 파이프라인 구축**으로 시스템 안정성과 운영 효율을 개선했고, 최근에는 **사내 문서 RAG 챗봇**을 설계·구현했습니다.
+약 50개 고객사와 2,000개 센서에서 하루 약 288만 행이 쌓이는 환경에서 데이터 모델링·변환 파이프라인·API·관측성을 구축했습니다.
 
-> 아래는 포트폴리오 사이트 메인 페이지의 내용입니다. 프로젝트별 문제 정의·해결 과정·아키텍처 다이어그램·운영 화면은 사이트의 상세 페이지에서 확인하실 수 있습니다.
+**[포트폴리오 바로가기](https://lzyxion.github.io/portfolio/)** · [GitHub](https://github.com/lzyxion) · [Email](mailto:wlsduf17@gmail.com)
 
----
+## About
+
+- Airflow·dbt 기반 표준화 파이프라인으로 센서별 수기 집계 정의·수정 반복 작업을 약 80% 줄이고, 신규 집계 추가 작업을 약 3시간에서 약 15분으로 단축했습니다.
+- TimescaleDB 하이퍼테이블·Continuous Aggregate·압축 정책으로 시계열 조회를 약 3배 개선하고, 월별 집계 시간을 약 70% 단축했습니다.
+- FastAPI·Casbin 기반 멀티테넌시 API에 테넌트 격리·권한 제어·Replica fallback을 구성했습니다.
+- 사내 GPU 환경에서 RAG 챗봇을 설계·구현해 검색 확인 시간을 약 8분에서 약 30초로 줄이고, recall@5를 68%에서 94%로 개선했습니다.
 
 ## Skills
 
-| 분류 | |
+| 영역 | 기술 |
 | --- | --- |
-| Language | Java · Python |
-| Backend | Spring Boot · FastAPI |
+| Backend | Python · FastAPI · Java · Spring Boot |
+| Data Platform | Airflow · dbt · SQL · PostgreSQL · TimescaleDB |
+| Infrastructure · Observability | Docker · Nginx · Linux · GitLab CI/CD · Prometheus · Grafana · Grafana Alloy |
 | Frontend | Vue |
-| Database | PostgreSQL · TimescaleDB · pgvector · SQL |
-| Data Engineering | Airflow · dbt |
-| Monitoring | Grafana · Prometheus · Grafana Alloy |
-| DevOps | Docker · Nginx · Linux · GitLab |
-| AI · LLM | LangChain · RAG · vLLM · Claude Code |
-
----
-
-## Career
-
-**2026.07 ~ 진행중 · 프로젝트 — 사내 문서 RAG 챗봇 구축**  
-*(주) 이노비 · 선임 연구원*  
-LangChain 과 사내 자체 호스팅 vLLM(생성·임베딩·리랭커)·pgvector 로 사내 문서 RAG 챗봇을 전담 설계·구현하며, 2단 검색(리랭크)·함수콜링 에이전트·인라인 출처 인용으로 환각을 억제한 사내 지식 어시스턴트 기반을 마련하고 있습니다.
-
-**2025.11 ~ 2026.06 · 프로젝트 — 파이프라인 구축 및 비즈니스 확장**  
-*(주) 이노비 · 선임 연구원*  
-Airflow·dbt 표준화 파이프라인을 구축하고, 멀티테넌시 기반 사내 자체 관리 대시보드를 아키텍처 설계부터 배포까지 전담 개발하며 후속 서비스의 확장 기반을 마련했습니다.
-
-**2025.07 · 자격증 — 빅데이터분석기사**  
-*한국데이터산업진흥원*
-
-**2024.10 ~ 2025.05 · 프로젝트 — 인프라 고도화 및 장애 예방**  
-*(주) 이노비 · 주임 연구원*  
-Prometheus 메트릭으로 DB 부하를 진단해 복제(Replica) 격리를 도입하고, Grafana Alloy 알림 체계를 구축해 인프라 안정성과 장애 대응력을 높였습니다.
-
-**2023.11 · 자격증 — 정보처리기사**  
-*한국산업인력공단*
-
-**2023.11 ~ 2024.04 · 프로젝트 — 데이터 아키텍처 및 쿼리 최적화**  
-*(주) 이노비 · 연구원*  
-TimescaleDB 기반으로 IIoT 시계열 데이터의 조회·집계·저장 구조를 최적화하고, 제조 현장 맞춤형 통합 관제 대시보드를 구축했습니다.
-
-**2021.10 ~ 2022.04 · 교육 — 국비지원 교육 과정 수료: 자바/코틀린 웹&앱 개발**
-
-**2014.03 ~ 2020.08 · 학력 — 광운대학교 화학공학과 학사**
-
----
 
 ## Projects
 
-### 1. 사내 문서 기반 RAG 챗봇 구축 — 사내 지식 검색·질의응답 어시스턴트
+| 프로젝트 | 기간 | 담당 | 핵심 성과 | 상세 |
+| --- | --- | --- | --- | --- |
+| 사내 문서 기반 RAG 챗봇 구축 | 2026.07 ~ 2026.08 | RAG 파이프라인·백엔드·프론트엔드·인프라 전담 | 문서 검색·확인 시간 약 8분 → 약 30초, recall@5 68% → 94% | [보기](https://lzyxion.github.io/portfolio/projects/internal-rag-chatbot) |
+| Airflow·dbt 기반 데이터 표준화 파이프라인 및 멀티테넌시 API 구축 | 2025.11 ~ 2026.06 | 백엔드·프론트엔드·인프라·파이프라인 전담 | 반복 운영 작업 약 80% 감소, 신규 집계 추가 약 3시간 → 약 15분 | [보기](https://lzyxion.github.io/portfolio/projects/data-platform) |
+| 시스템 인프라 고도화 및 모니터링·알림 구축 | 2024.10 ~ 2025.05 | DB 부하 진단·조회 부하 분리·Edge 모니터링/알림 | 메인 DB CPU 99% → 25%, 현장 Edge 장비 다운율 25% → 0% 예방 | [보기](https://lzyxion.github.io/portfolio/projects/infra-monitoring) |
+| 스마트 팩토리 IIoT 시계열 데이터 최적화 및 통합 관제 대시보드 구축 | 2023.11 ~ 2024.04 | 데이터 시각화·통합 관제 대시보드 구축 | 조회 450ms → 150ms, 월별 집계 1.8s → 540ms, 저장 공간 약 80% 절감 | [보기](https://lzyxion.github.io/portfolio/projects/iiot-monitoring) |
 
-`2026.07 ~ 진행중`
+각 상세 페이지에서는 문제 → 목표 → 해결 → 성과 → 리뷰 흐름으로 아키텍처, 기술 선택, 핵심 구현, 실제 적용 화면을 확인할 수 있습니다.
 
-> **성과** — 사내 문서 RAG 챗봇을 설계·구현. 멀티쿼리·2단 리랭크로 검색 관련성을 높이고 강제 검색·인라인 출처 인용으로 환각을 억제해, 부서별 NAS 에 흩어진 문서를 뒤지던 평균 8분을 30초 질의로 줄인 사내 지식 어시스턴트. (진행중)
+## Career
 
-**역할**
+### (주) 이노비 · 선임 연구원
 
-- 멀티쿼리 확장 + bge-reranker 2단 검색(top_k → top_n)으로 컨텍스트 관련성 향상 (recall@5 68% → 94%)
-- strict 강제 검색 + 인라인 `[n]` 출처 인용으로 무근거 답변(환각) 비율 25% → 4% 억제
-- HWP·스캔 PDF(OCR) 멀티포맷 적재 + NAS 부서별 증분 동기화로 사내 문서 코퍼스 구축
-- LangChain LCEL 파이프라인 + FastAPI SSE 스트리밍 · React(assistant-ui) UI·API 단일 이미지(:8000) 사내 서버 배포
+`2023.11 ~ 현재`
 
-**기술스택** — LangChain · RAG · vLLM · pgvector · FastAPI · React · PostgreSQL · Docker
+- 스마트팩토리·IIoT 시계열 데이터 플랫폼의 데이터 처리·관제·운영 고도화 담당
+- 데이터 표준화 파이프라인과 멀티테넌시 API·사내 자체 관리 대시보드 설계·개발
+- DB 부하 분석·복제 구성·모니터링 및 알림 체계 구축으로 서비스 안정성 개선
 
-[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/internal-rag-chatbot) · 저장소 [lzyxion/rocket-desk](https://github.com/lzyxion/rocket-desk)
+## Education & Certifications
 
----
-
-### 2. 데이터 파이프라인 구축 및 사내 자체 관리 대시보드 · 확장형 API 서버 개발
-
-`2025.11 ~ 2026.06`
-
-> **성과** — Airflow + dbt 표준화 파이프라인 도입으로 운영 공수 약 80% 절감·신규 집계 추가 작업 약 12배 가속, 멀티테넌시 기반 사내 자체 관리 대시보드를 아키텍처 설계부터 배포까지 전담 개발 — 후속 서비스 확장 기반 마련.
-
-**역할**
-
-- Apache Airflow 기반의 자동화 배치 파이프라인 및 집계 DAGs 를 구축하여 운영 공수 80% 절감
-- dbt 를 도입하여 파편화된 제조 데이터 표준화 및 데이터 이상치(Outlier) 정제 파이프라인 구현
-- 생성형 AI 를 활용한 생산성 극대화로 멀티테넌시 기반 사내 자체 관리 대시보드(후속 서비스 확장 기반)를 아키텍처 설계부터 배포까지 전담 개발
-
-**기술스택** — Airflow · dbt · FastAPI · Vue.js · Docker · Nginx · GitLab CI/CD
-
-[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/data-platform) · 저장소 [lzyxion/dbt-sensor](https://github.com/lzyxion/dbt-sensor) · [lzyxion/sensor-gateway-portfolio](https://github.com/lzyxion/sensor-gateway-portfolio)
-
----
-
-### 3. 시스템 인프라 고도화 및 모니터링, 알림 구축
-
-`2024.10 ~ 2025.05`
-
-> **성과** — Prometheus 진단·Slave DB 격리로 DB CPU 99% → 25% 안정화·아웃바운드 트래픽 10Mbps 이하 유지, Grafana Alloy 알림 체계 구축으로 현장 Edge 장비 다운율 25% → 0% 사전 예방.
-
-**역할**
-
-- 메인 DB CPU 과부하(99%) 문제를 Prometheus 메트릭으로 진단하여 팀 내 복제(Replication) 아키텍처 도입 근거 제시
-- 실시간 관제 대시보드(Grafana)의 데이터 소스를 Slave DB 로 이전 — Master DB CPU 사용량 안정화(평균 25%) 및 네트워크 아웃바운드 트래픽 10Mbps 이하 유지로 초과 비용 개선
-- 현장 PC 에 Grafana Alloy 에이전트를 도입하여 호스트 메트릭 수집 및 임계치 알림 체계를 구축, 메모리 고갈 전 사전 조치로 장비 다운율 25% → 0% 예방
-
-**기술스택** — PostgreSQL · TimescaleDB · PgBouncer · Streaming Replication · Grafana · Grafana Alloy · Prometheus · VictoriaMetrics
-
-[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/infra-monitoring)
-
----
-
-### 4. 스마트 팩토리 IIoT 시계열 데이터 최적화 및 통합 관제 대시보드 구축
-
-`2023.11 ~ 2024.04`
-
-> **성과** — TimescaleDB 하이퍼테이블·연속집계·압축 정책 도입으로 IIoT 시계열 데이터 조회 2~3배 향상·집계 쿼리 70% 이상 단축·저장 공간 80% 이상 절감, 제조 현장 실시간 관제 시스템 토대 구축.
-
-**역할**
-
-- TimescaleDB 하이퍼테이블 아키텍처 및 하이퍼 함수 도입으로 시계열 데이터 조회 속도 평균 2~3배 향상
-- 연속집계(Continuous Aggregates) 기능을 활용하여 수백만 건 규모의 통계/집계 쿼리 수행 시간 70% 이상 단축
-- 하이퍼테이블 청크(Chunk) 단위 압축(Compression) 정책 수립으로 데이터 저장 공간 80% 이상 절감
-- Grafana 를 활용하여 제조 현장 맞춤형 IIoT 센서 데이터 실시간 대시보드 구축
-
-**기술스택** — TimescaleDB · Grafana · SQL
-
-[자세히 보기 →](https://lzyxion.github.io/portfolio/projects/iiot-monitoring)
-
----
-
-## Contact
-
-궁금한 점이나 협업 제안이 있다면 편하게 연락 주세요.
-
-| | |
-| --- | --- |
-| Email | [wlsduf17@gmail.com](mailto:wlsduf17@gmail.com) |
-| GitHub | [github.com/lzyxion](https://github.com/lzyxion) |
+- **광운대학교 화학공학과 학사** · 2014.03 ~ 2020.08
+- **빅데이터분석기사** · 2025.07
+- **정보처리기사** · 2023.11
