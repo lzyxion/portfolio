@@ -91,12 +91,12 @@ const option = computed(() => ({
         },
         {
           value: props.afterValue,
-          itemStyle: { color: '#10b981', borderRadius: [4, 4, 0, 0] },
+          itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] },
           label: {
             show: true,
             position: 'top',
             formatter: () => props.afterDisplay,
-            color: '#10b981',
+            color: '#1d4ed8',
             fontSize: 11,
             fontWeight: 700,
           },

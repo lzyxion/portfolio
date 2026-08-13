@@ -6,17 +6,29 @@ export const years: Record<YearKey, YearMeta> = {
     label: '1년차',
     range: '2023.06 ~ 2024.05',
     showcase: {
-      title: 'Showcase',
+      title: '실제 적용 화면',
       description:
-        'TimescaleDB, Grafana 기반 위에서 재직 기간 동안 누적·확장된 제조 현장 맞춤형 실시간 대시보드입니다. 다양한 플러그인을 활용했으며, 특히 ECharts.js 를 활용해 커스텀 차트를 직접 구성하여 제조 현장 요구에 맞는 시각화를 제공했습니다.',
-      items: Array.from({ length: 6 }, (_, i) => {
-        const n = String(i + 1).padStart(2, '0')
-        return {
-          label: '대시보드',
-          src: `${import.meta.env.BASE_URL}architectures/dashboard-${n}.png`,
-          alt: `Grafana IIoT 실시간 모니터링 대시보드 ${n}`,
-        }
-      }),
+        '현장 데이터를 실시간으로 탐색하고, 설비 상태와 에너지 지표를 확인하도록 구성한 Grafana 관제 화면입니다.',
+      items: [
+        {
+          label: '통합 관제',
+          src: `${import.meta.env.BASE_URL}architectures/iiot-dashboard-overview.png`,
+          alt: 'Grafana IIoT 실시간 통합 관제 대시보드',
+          caption: '통합 관제 — 현장 시계열 데이터를 한 화면에서 조회하는 대표 대시보드',
+        },
+        {
+          label: '설비 분석',
+          src: `${import.meta.env.BASE_URL}architectures/iiot-dashboard-analysis.png`,
+          alt: 'Grafana 설비별 시계열 분석 대시보드',
+          caption: '설비 분석 — 기간과 설비 조건에 따라 시계열 데이터를 비교·탐색',
+        },
+        {
+          label: '에너지 현황',
+          src: `${import.meta.env.BASE_URL}architectures/iiot-dashboard-energy.png`,
+          alt: 'Grafana 에너지 사용량 대시보드',
+          caption: '에너지 현황 — 집계 지표와 추이를 함께 확인하는 화면',
+        },
+      ],
     },
   },
   2: {
@@ -24,20 +36,20 @@ export const years: Record<YearKey, YearMeta> = {
     label: '2년차',
     range: '2024.06 ~ 2025.05',
     showcase: {
-      title: 'Showcase',
+      title: '실제 적용 화면',
       description:
-        '현장 Edge 서버에 일괄 배포한 Grafana Alloy 가 호스트 메트릭을 VictoriaMetrics 로 push 수집하고, 이를 Grafana 에서 감시·시각화하는 화면입니다. 단순 Used 가 아닌 MemAvailable 기준으로 사용률을 계산하는 PromQL 룰로 메모리 고갈 이전에 사전 알람을 발송하며, 다중 노드의 자원 상태는 하나의 대시보드에서 통합해 확인합니다.',
+        '현장 노드 상태를 통합 관제하고, 메모리 고갈 전에 조치할 수 있도록 알람을 구성한 화면입니다.',
       items: [
         {
           label: '알람',
-          src: `${import.meta.env.BASE_URL}architectures/project2-01.png`,
+          src: `${import.meta.env.BASE_URL}architectures/infra-alert-rule.png`,
           alt: 'Grafana Alert rule — Memory Used Over 85%',
           caption:
             'Memory Used Over 85% — MemAvailable 기준 사용률 임계치(>85%) 알람 룰 · 최근 발화 이력',
         },
         {
           label: '대시보드',
-          src: `${import.meta.env.BASE_URL}architectures/project2-02.png`,
+          src: `${import.meta.env.BASE_URL}architectures/infra-node-metrics.png`,
           alt: 'Grafana Node Exporter Full 대시보드 — 다중 노드 호스트 메트릭 통합 조회',
           caption:
             'Node Exporter Full — 다중 노드 CPU · 메모리 · 디스크 · 네트워크 통합 대시보드',
@@ -50,44 +62,30 @@ export const years: Record<YearKey, YearMeta> = {
     label: '3년차',
     range: '2025.06 ~ 2026.05',
     showcase: {
-      title: 'Showcase',
+      title: '실제 적용 화면',
       description:
-        '멀티테넌시 사내 자체 관리 대시보드의 화면입니다. 관리자용 통합 관제·테넌트 관리부터 사용자용 에너지 대시보드·분석 화면까지 하나의 서비스로 제공합니다. (업체명 등 민감 정보는 블러 처리)',
+        '멀티테넌시 관리·분석 기능을 하나의 서비스에서 제공하는 사내 자체 관리 대시보드입니다. 민감 정보는 블러 처리했습니다.',
       items: [
         {
-          label: '관리자',
-          src: `${import.meta.env.BASE_URL}architectures/project3-01.png`,
+          label: '통합 관제',
+          src: `${import.meta.env.BASE_URL}architectures/data-platform-admin-dashboard.png`,
           alt: 'Sensor Gateway 관리자 대시보드 — 전체 업체·센서 현황과 알림 설정',
           caption:
             '관리자 대시보드 — 전체 업체·센서 현황 · Slack/Discord 웹훅 알림 · 업체별 센서 상태 (연도·프로젝트 필터)',
         },
         {
-          label: '관리자',
-          src: `${import.meta.env.BASE_URL}architectures/project3-02.png`,
-          alt: 'Sensor Gateway 테넌트 관리 — 업체별 상태·DB 연결 관리 테이블',
-          caption:
-            '테넌트 관리 — 업체별 상태 · Airflow On/Off · 센서 타입 · Master/Replica DB 연결 관리',
-        },
-        {
           label: '사용자',
-          src: `${import.meta.env.BASE_URL}architectures/project3-03.png`,
+          src: `${import.meta.env.BASE_URL}architectures/data-platform-energy-dashboard.png`,
           alt: 'Sensor Gateway 사용자 대시보드 — 에너지 사용량과 설비·공정별 수요 전력',
           caption:
             '사용자 대시보드 — 에너지 사용량 · 전월 대비 · 설비/공정별 수요 전력 · 센서 상태',
         },
         {
           label: '사용자',
-          src: `${import.meta.env.BASE_URL}architectures/project3-04.png`,
+          src: `${import.meta.env.BASE_URL}architectures/data-platform-period-analysis.png`,
           alt: 'Sensor Gateway 기간 분석 — 자산 계층 트리 기반 사용량 조회',
           caption:
             '기간 분석 — 자산 계층 트리 · 기간/집계 간격 선택 조회 · CSV 다운로드',
-        },
-        {
-          label: '사용자',
-          src: `${import.meta.env.BASE_URL}architectures/project3-05.png`,
-          alt: 'Sensor Gateway 계측 분석 — 센서 단위 원본 데이터 차트 조회',
-          caption:
-            '계측 분석 — 센서 단위 원본 데이터 조회 · 표시 컬럼 선택 · 구간 줌 탐색',
         },
       ],
     },
@@ -97,30 +95,23 @@ export const years: Record<YearKey, YearMeta> = {
     label: '4년차',
     range: '2026.06 ~ 현재',
     showcase: {
-      title: 'Showcase',
+      title: '실제 적용 화면',
       description:
-        '사내 문서 RAG 챗봇의 실제 화면입니다. React (assistant-ui) 챗 UI 로 엄격/일반 모드 · 부서 검색 범위 선택 · SSE 스트리밍 · [n] 출처 인용을 제공하며, 함수콜링으로 사내 설비 데이터 조회까지 확장했습니다. (대화 목록 · 업체명 등 민감 정보는 블러 처리)',
+        '사내 문서 검색 범위와 엄격 모드를 선택하고, 답변 근거를 원문으로 확인할 수 있는 챗봇 화면입니다. 민감 정보는 블러 처리했습니다.',
       items: [
         {
           label: '홈',
-          src: `${import.meta.env.BASE_URL}architectures/project4-01.png`,
+          src: `${import.meta.env.BASE_URL}architectures/rag-chat-home.png`,
           alt: 'Rocket-Desk 새 대화 화면 — 엄격/일반 모드와 부서 범위 선택, 예시 질문 칩',
           caption:
             '새 대화 화면 — 엄격/일반 모드 · 부서 검색 범위 선택 · 모델 표시 · 예시 질문 칩',
         },
         {
           label: '문서 질의',
-          src: `${import.meta.env.BASE_URL}architectures/project4-02.png`,
+          src: `${import.meta.env.BASE_URL}architectures/rag-chat-citations.png`,
           alt: 'Rocket-Desk 엄격 모드 질의응답 — 문장 단위 [n] 출처 각주와 원문 링크, 관련도 표기',
           caption:
             '엄격 모드 질의응답 — 문장 단위 [n] 출처 각주 · 원문 파일/페이지 링크 · 관련도 점수 표기',
-        },
-        {
-          label: '데이터 질의',
-          src: `${import.meta.env.BASE_URL}architectures/project4-03.png`,
-          alt: 'Rocket-Desk 설비 데이터 질의 — 함수콜링으로 센서 집계를 조회해 차트와 CSV 로 응답',
-          caption:
-            '설비 데이터 질의 — 함수콜링으로 센서 집계 조회 · 차트 시각화 · CSV 다운로드',
         },
       ],
     },

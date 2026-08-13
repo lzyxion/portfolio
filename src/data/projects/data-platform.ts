@@ -102,7 +102,7 @@ export const dataPlatform: Project = {
     media: [
       {
         label: '아키텍처',
-        src: `${import.meta.env.BASE_URL}architectures/data-platform-multitenant.svg`,
+        src: `${import.meta.env.BASE_URL}architectures/data-platform-architecture.svg`,
         alt: 'Airflow·dbt 데이터 처리와 FastAPI 멀티테넌시 조회 흐름을 나타낸 아키텍처',
         description: [
           'Airflow·dbt — 업체별 센서 데이터를 테넌트별 DAG로 표준화·정제·집계해 저장합니다.',
@@ -284,17 +284,21 @@ group by c.sensor_id, {{ time_bucket('15 minutes', 'c.measured_at') }}`,
         title: 'Airflow DAG · 멀티테넌시 동적 스케줄링',
         icon: 'pi pi-clock',
         headline:
-          'Cosmos DbtTaskGroup 으로 dbt manifest 에서 모델을 task 로 자동 변환하고, 업체별 보유 센서 태그로 모델을 선택 실행하는 동적 멀티테넌시 DAG 패턴입니다.',
-        note: [
-          'load_clients() 로 마스터 DB 에서 업체 목록을 읽어 글로벌 네임스페이스에 DAG 를 동적 등록 — 신규 업체 추가 시 코드 변경 없이 DAG 자동 생성됩니다.',
-          'tag-based select(`tag:powermeter` 등)로 업체가 보유한 센서 종류의 모델만 실행 — 불필요한 모델·테스트를 스킵해 실행 시간·DB 부하를 절감합니다.',
-          '테넌트별 3분 간격 staggered cron + Airflow Pool 로 동시 fork·동시 쓰기 부하를 분산·캡 — 공유 DB 호스트의 WAL 버스트와 replica replay 충돌을 사전 차단합니다.',
-        ],
+          '업체별 센서 구성이 달라도 하나의 코드베이스에서 파이프라인을 운영할 수 있도록 동적 DAG를 구성했습니다.',
+        implementationCard: {
+          approach: [
+            'Master DB에서 업체·센서 구성을 읽어 업체별 DAG를 자동 등록했습니다.',
+            '센서 태그로 필요한 dbt 모델만 선택 실행하고, 3분 간격 스케줄과 Pool로 동시 쓰기 부하를 제어했습니다.',
+          ],
+          result: '신규 업체 추가 시 DAG 코드를 수정하지 않고, 집계 실행과 DB 부하를 일관되게 관리할 수 있는 기반을 마련했습니다.',
+        },
         snippets: [
           {
             title: 'create_dag — 업체별 동적 DAG 생성 (Cosmos + tag-based select)',
             description:
               'DbtTaskGroup 으로 dbt 모델을 task 로 자동 변환, 업체 보유 센서 태그로 모델 선택 실행, staggered cron + Pool 로 부하 분산.',
+            collapsed: true,
+            highlightPhrases: ['select_tags =', '"pool": DBT_WRITE_POOL', 'globals()[f"dbt_sensor_'],
             language: 'python',
             code: `"""dbt 모델을 업체별로 분리해 매일 새벽 staggered 스케줄로 실행하는 동적 멀티테넌시 DAG.
 
@@ -413,17 +417,21 @@ for i, client in enumerate(CLIENTS):
         title: 'FastAPI · 멀티테넌시 API 서버 (후속 서비스 확장 기반)',
         icon: 'pi pi-bolt',
         headline:
-          '하나의 API 인스턴스가 X-Tenant-ID 헤더로 업체별 DB 엔진을 동적 라우팅하고, 1·2년차에 구축한 Read Replica 를 자동 fallback 하는 멀티테넌시 패턴 위에, 사내 자체 관리 대시보드와 후속 서비스가 공통으로 올라갈 도메인 라우터 기반을 마련했습니다.',
-        note: [
-          'TenantMiddleware → request.state → FastAPI Depends 체인으로 모든 라우터에 tenant_id·세션이 일관 주입 — 도메인 핸들러는 테넌트 분기를 신경 쓰지 않습니다.',
-          'EngineRegistry 가 테넌트별 read·write AsyncEngine 을 lazy 생성·캐시하고, Replica 연결 실패 시 자동으로 write 엔진으로 fallback + 1회만 Slack 알림 발송합니다.',
-          'Casbin AsyncEnforcer 기반 require_permission(resource, action) 으로 라우터마다 한 줄 RBAC — reader → writer → admin 역할 계층이 자동 상속됩니다.',
-        ],
+          '하나의 API로 여러 업체를 안전하게 수용하고, 대시보드와 후속 서비스가 함께 사용할 공통 백엔드 기반을 만들었습니다.',
+        implementationCard: {
+          approach: [
+            'TenantMiddleware와 Depends 체인으로 요청마다 테넌트·세션을 주입하고, 테넌트별 DB 엔진을 동적으로 선택했습니다.',
+            'Casbin RBAC으로 라우터 권한을 제어하고, Replica 연결 실패 시 Primary로 전환·알림하도록 구성했습니다.',
+          ],
+          result: '업체별 데이터 격리와 권한 통제를 유지하면서 공통 API·관리 대시보드 기반으로 후속 서비스 확장을 가능하게 했습니다.',
+        },
         snippets: [
           {
             title: 'Sensors Router — pydantic + async SQLAlchemy + Casbin RBAC',
             description:
               'pydantic 모델로 입력 검증·OpenAPI 자동 생성, Depends 로 Replica/Primary 세션 자동 라우팅, Casbin require_permission 으로 라우터 한 줄 RBAC.',
+            collapsed: true,
+            highlightPhrases: ['Depends(get_read_session)', 'require_permission("sensors", "read")', 'Depends(get_db_session)', 'require_permission("sensors", "write")'],
             language: 'python',
             code: `"""센서(Sensor) CRUD — pydantic + async SQLAlchemy 2.0 + Casbin RBAC."""
 

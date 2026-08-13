@@ -26,6 +26,10 @@ export interface YearMeta {
 export interface CodeSnippet {
   title: string
   description?: string
+  /** 포트폴리오에서는 접어 두고, 필요할 때 전체 코드를 펼친다. */
+  collapsed?: boolean
+  /** 코드에서 강조할 줄을 식별하는 문구 */
+  highlightPhrases?: string[]
   language:
     | 'sql'
     | 'python'
@@ -55,6 +59,11 @@ export interface CodeSection {
   /** headline 과 note 사이에 렌더링되는 정리 표 */
   table?: SectionTable
   note?: string[]
+  /** 핵심 구현을 '어떻게 / 결과' 카드로 표시할 때 사용 */
+  implementationCard?: {
+    approach: string[]
+    result: string
+  }
   snippets: CodeSnippet[]
   media?: MediaItem[]
   /** true 면 media 를 코드 스니펫 위에 배치. 기본은 아래(false). */

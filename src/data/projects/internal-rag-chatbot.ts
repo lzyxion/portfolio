@@ -113,7 +113,7 @@ export const internalRagChatbot: Project = {
     media: [
       {
         label: '아키텍처',
-        src: `${import.meta.env.BASE_URL}architectures/internal-rag-chatbot.svg`,
+        src: `${import.meta.env.BASE_URL}architectures/rag-architecture.svg`,
         alt: '사내 NAS 문서 적재와 FastAPI 기반 RAG 질의 응답 흐름',
         description: [
           '사내 NAS 문서를 파싱·청킹해 pgvector에 임베딩과 출처 메타데이터로 저장합니다.',
@@ -247,7 +247,7 @@ export const internalRagChatbot: Project = {
         media: [
           {
             label: '파이프라인',
-            src: `${import.meta.env.BASE_URL}architectures/rag-pipeline.svg`,
+            src: `${import.meta.env.BASE_URL}architectures/rag-query-pipeline.svg`,
             alt: '질문에서 벡터 검색·리랭크·출처 기반 답변 생성으로 이어지는 RAG 파이프라인',
           },
         ],

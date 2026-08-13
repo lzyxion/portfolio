@@ -110,7 +110,7 @@ export const iiotMonitoring: Project = {
     media: [
       {
         label: '아키텍처',
-        src: `${import.meta.env.BASE_URL}architectures/iiot-monitoring.svg`,
+        src: `${import.meta.env.BASE_URL}architectures/iiot-architecture.svg`,
         alt: '현장 수집부터 TimescaleDB 저장과 Grafana 관제까지의 IIoT 데이터 흐름',
         description: [
           '현장 Edge가 IoT 센서·PLC 데이터를 수집해 OPC UA로 변환하고, 클라우드 TimescaleDB에 적재합니다.',
@@ -158,6 +158,8 @@ export const iiotMonitoring: Project = {
             title: 'time_bucket + $__interval — 패널 해상도에 맞춘 구간 집계',
             description:
               '고정 버킷 폭 대신 Grafana 의 $__interval 을 써서, 조회 구간을 넓혀도 반환 포인트 수가 패널이 그릴 수 있는 범위로 유지되도록 했습니다. 데이터 소스에 TimescaleDB 옵션이 켜져 있으면 $__timeGroup(measured_at, $__interval) 도 같은 time_bucket 호출로 컴파일됩니다.',
+            collapsed: true,
+            highlightPhrases: ["time_bucket('$__interval'", 'last(power_total_kw, measured_at)', 'WHERE $__timeFilter(measured_at)'],
             language: 'sql',
             code: `SELECT
   -- $__interval 은 '5m' 같은 문자열로 치환되므로 따옴표로 감싸 interval 로 넘긴다
@@ -190,6 +192,8 @@ ORDER BY 1;`,
             title: 'counter_agg + delta — 리셋되는 카운터 장비의 실제 증분',
             description:
               '적산 계량기·카운터 장비는 교체나 재기동으로 값이 0 으로 돌아갑니다. 누적값의 단순 차이로는 그 구간이 음수가 되어 버려지므로, TimescaleDB Toolkit 의 counter_agg + delta 로 리셋 지점을 인식해 끊긴 구간을 이어 붙인 실제 증분을 산출했습니다.',
+            collapsed: true,
+            highlightPhrases: ["time_bucket('1 day'", 'delta(counter_agg(measured_at, counter))', 'WHERE $__timeFilter(measured_at)'],
             language: 'sql',
             code: `SELECT
   sensor_id,
@@ -217,6 +221,8 @@ ORDER BY sensor_id, bucket_day;`,
             title: 'Continuous Aggregate — 일/월 2단 캐스케이드 자동 집계',
             description:
               '일 → 월 2단 캐스케이드 Cagg + 1시간 주기 자동 갱신 정책 (materialized_only=false 로 실시간 데이터 결합 조회). 일별 사용량은 하이퍼 함수 last − first 로 잡되, 리셋으로 음수가 나오는 구간은 0 으로 막아 집계가 오염되지 않게 했습니다.',
+            collapsed: true,
+            highlightPhrases: ['CREATE MATERIALIZED VIEW cagg_powermeter_reading_1d', "add_continuous_aggregate_policy('cagg_powermeter_reading_1d'", 'timescaledb.materialized_only = false', 'CREATE MATERIALIZED VIEW cagg_powermeter_reading_1m'],
             language: 'sql',
             code: `-- 일별 에너지 사용량 Cagg
 CREATE MATERIALIZED VIEW cagg_powermeter_reading_1d
@@ -276,6 +282,8 @@ SELECT add_continuous_aggregate_policy('cagg_powermeter_reading_1m',
             title: 'Compression Policy — sensor_id 기준 청크 압축 및 효과 검증',
             description:
               'sensor_id 단위 segmentby 로 7일 이전 청크 자동 압축 + 청크별 크기·절감률 검증 쿼리.',
+            collapsed: true,
+            highlightPhrases: ["timescaledb.compress_segmentby = 'sensor_id'", "add_compression_policy('tbl_powermeter_reading'", 'AS saved_pct'],
             language: 'sql',
             code: `-- 압축 정책 활성화 (sensor_id 단위 segmentby)
 ALTER TABLE tbl_powermeter_reading SET (

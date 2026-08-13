@@ -2,11 +2,6 @@
 import { defineAsyncComponent } from 'vue'
 import SkillBadge from '@/components/SkillBadge.vue'
 import TechStackTabs from '@/components/TechStackTabs.vue'
-import Tabs from 'primevue/tabs'
-import TabList from 'primevue/tablist'
-import Tab from 'primevue/tab'
-import TabPanels from 'primevue/tabpanels'
-import TabPanel from 'primevue/tabpanel'
 import ZoomableImage from '@/components/ZoomableImage.vue'
 import { type MediaItem, type Project, type TechRationale } from '@/data/projects'
 import { highlight } from '@/utils/highlight'
@@ -17,12 +12,6 @@ const CodeBlock = defineAsyncComponent(() => import('@/components/CodeBlock.vue'
 const MetricBar = defineAsyncComponent(() => import('@/components/MetricBar.vue'))
 
 defineProps<{ project: Project }>()
-
-function tabLabel(title: string): string {
-  // "X — Y (Z)" 형태에서 ' — ' 앞 부분만 추출 (탭 헤더용 짧은 라벨)
-  const sep = title.indexOf(' — ')
-  return sep > 0 ? title.slice(0, sep) : title
-}
 
 function repoName(repo: string): string {
   // 'owner/name' 에서 저장소 이름만 — 헤더 메타 줄이 길어지지 않도록 (전체 경로는 title 속성)
@@ -344,16 +333,40 @@ function groupMedia(media: MediaItem[]): MediaGroup[] {
           <i :class="[section.icon ?? 'pi pi-code', 'text-sm text-primary']" aria-hidden="true" />
           {{ section.title }}
         </h3>
-        <div v-if="section.headline || section.table || section.note?.length" class="mb-4">
+        <div v-if="section.headline || section.table || section.note?.length || section.implementationCard" class="mb-4">
           <p
             v-if="section.headline"
             class="text-sm leading-relaxed text-surface-600 dark:text-surface-300"
             v-html="highlight(section.headline)"
           />
           <div
+            v-if="section.implementationCard"
+            class="mt-4 grid overflow-hidden rounded-lg border border-surface-200 bg-white dark:border-surface-800 dark:bg-surface-900 sm:grid-cols-[1fr_0.7fr]"
+          >
+            <div class="p-4">
+              <p class="mb-2 text-xs font-bold uppercase tracking-wider text-surface-500 dark:text-surface-400">
+                어떻게
+              </p>
+              <ul class="space-y-1.5 text-sm leading-relaxed text-surface-700 dark:text-surface-300">
+                <li v-for="item in section.implementationCard.approach" :key="item" class="flex gap-2">
+                  <span class="text-primary">·</span>
+                  <span>{{ item }}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="border-t border-surface-200 bg-primary-50 p-4 dark:border-surface-800 dark:bg-primary-950/30 sm:border-l sm:border-t-0">
+              <p class="mb-2 text-xs font-bold uppercase tracking-wider text-primary-700 dark:text-primary-300">
+                결과
+              </p>
+              <p class="text-sm font-medium leading-relaxed text-surface-800 dark:text-surface-100">
+                {{ section.implementationCard.result }}
+              </p>
+            </div>
+          </div>
+          <div
             v-if="section.table"
             class="overflow-hidden rounded-lg border border-surface-200 dark:border-surface-800"
-            :class="section.headline ? 'mt-3' : ''"
+            :class="section.headline || section.implementationCard ? 'mt-3' : ''"
           >
             <div class="overflow-x-auto">
               <table class="w-full min-w-[560px] border-collapse text-sm">
@@ -397,7 +410,7 @@ function groupMedia(media: MediaItem[]): MediaGroup[] {
             </div>
           </div>
           <ol
-            v-if="section.note?.length"
+            v-if="section.note?.length && !section.implementationCard"
             class="space-y-2 pl-0"
             :class="section.headline || section.table ? 'mt-3' : ''"
           >
@@ -461,29 +474,14 @@ function groupMedia(media: MediaItem[]): MediaGroup[] {
           </section>
         </div>
 
-        <Tabs v-if="section.snippets.length > 1" :value="'0'">
-          <TabList>
-            <Tab v-for="(s, i) in section.snippets" :key="i" :value="String(i)">
-              {{ tabLabel(s.title) }}
-            </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel v-for="(s, i) in section.snippets" :key="i" :value="String(i)">
-              <CodeBlock
-                :title="s.title"
-                :description="s.description"
-                :language="s.language"
-                :code="s.code"
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-        <div v-else class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4">
           <CodeBlock
             v-for="snippet in section.snippets"
             :key="snippet.title"
             :title="snippet.title"
             :description="snippet.description"
+            :collapsed="snippet.collapsed"
+            :highlight-phrases="snippet.highlightPhrases"
             :language="snippet.language"
             :code="snippet.code"
           />

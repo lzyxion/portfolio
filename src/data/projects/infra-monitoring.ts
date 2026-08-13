@@ -120,7 +120,7 @@ export const infraMonitoring: Project = {
     media: [
       {
         label: '아키텍처',
-        src: `${import.meta.env.BASE_URL}architectures/infra-monitoring.svg`,
+        src: `${import.meta.env.BASE_URL}architectures/infra-architecture.svg`,
         alt: 'Replica 기반 조회 부하 분리와 Grafana Alloy 모니터링 흐름',
         description: [
           '현장 Edge의 데이터는 TimescaleDB Primary에 적재하고, Streaming Replication으로 Replica에 복제했습니다.',
@@ -205,6 +205,8 @@ export const infraMonitoring: Project = {
             title: 'alloy_agent_install.sh — 설치·검증·기동 파이프라인 (Bash)',
             description:
               '노드별 값은 .env / 인라인으로 주입받아 /etc/default/alloy 에 쓰고, 저장소 등록 → 설치 → 설정 생성 → 포맷 검증 → 기동 → 헬스체크를 한 흐름으로 실행.',
+            collapsed: true,
+            highlightPhrases: ['write_env_file', 'validate_config', 'check_installation'],
             language: 'bash',
             code: `# 우선순위: 인라인 주입(FOO=bar ./script.sh) > .env > 아래 기본값
 SCRIPT_DIR="$(cd "$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
@@ -246,6 +248,8 @@ main() {
             title: 'config.alloy — 호스트 메트릭 수집 · remote_write (River)',
             description:
               '내장 unix exporter 로 호스트 지표를 수집하고, instance 라벨을 노드 식별자로 치환한 뒤 basic_auth 로 중앙 VictoriaMetrics 에 push.',
+            collapsed: true,
+            highlightPhrases: ['prometheus.remote_write "central"', 'replacement  = sys.env("INSTANCE")', 'forward_to      = [prometheus.remote_write.central.receiver]'],
             language: 'river',
             code: `// 중앙 저장소(VictoriaMetrics) 로 push — 엣지가 내부망이라 pull 불가
 prometheus.remote_write "central" {
@@ -303,6 +307,8 @@ prometheus.scrape "host_metrics" {
             title: 'Grafana 알람 룰 — 메모리 사용률 85% 초과 감지 (PromQL)',
             description:
               '(1 − MemAvailable / MemTotal) × 100 으로 메모리 사용률을 계산하고, unix exporter job 라벨로 필터링해 85% 초과 시 알람 발송.',
+            collapsed: true,
+            highlightPhrases: ['node_memory_MemAvailable_bytes', ') * 100'],
             language: 'sql',
             code: `(
   1 - (

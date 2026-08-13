@@ -70,8 +70,14 @@ const tocItems = computed(() => {
             >
               {{ showcase.description }}
             </p>
-            <div class="grid gap-3 sm:grid-cols-2">
-              <figure v-for="(item, idx) in showcase.items" :key="idx">
+            <div
+              class="grid grid-cols-2 gap-3"
+              :class="showcase.items.length >= 3 ? 'sm:grid-cols-3' : ''"
+            >
+              <figure
+                v-for="(item, idx) in showcase.items"
+                :key="idx"
+              >
                 <div
                   class="aspect-video overflow-hidden rounded-md border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-900"
                 >

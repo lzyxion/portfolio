@@ -26,6 +26,8 @@ hljs.registerAliases(['river'], { languageName: 'nginx' })
 const props = defineProps<{
   title?: string
   description?: string
+  collapsed?: boolean
+  highlightPhrases?: string[]
   language: string
   code: string
 }>()
@@ -40,7 +42,23 @@ const highlighted = computed(() => {
   }
 })
 
+const highlightedLines = computed(() =>
+  trimmed.value.split('\n').map((line) => {
+    let html = line
+    try {
+      html = hljs.highlight(line || ' ', { language: props.language, ignoreIllegals: true }).value
+    } catch {
+      // keep the original line when a language rule cannot parse it
+    }
+    return {
+      html: line ? html : '&nbsp;',
+      active: props.highlightPhrases?.some((phrase) => line.includes(phrase)) ?? false,
+    }
+  }),
+)
+
 const copied = ref(false)
+const showCode = ref(!props.collapsed)
 async function copy() {
   try {
     await navigator.clipboard.writeText(trimmed.value)
@@ -69,17 +87,26 @@ async function copy() {
         </div>
       </div>
       <button
+        v-if="collapsed"
         type="button"
-        class="shrink-0 rounded-md border border-surface-300 px-2 py-1 text-[11px] text-surface-600 transition-colors hover:bg-surface-100"
+        class="shrink-0 rounded-md border border-primary-200 px-2 py-1 text-[11px] font-medium text-primary-700 transition-colors hover:bg-primary-50"
+        @click="showCode = !showCode"
+      >
+        <i :class="showCode ? 'pi pi-chevron-up' : 'pi pi-code'" class="mr-1 text-[10px]" />
+        {{ showCode ? '코드 닫기' : '코드 보기' }}
+      </button>
+    </header>
+    <div v-if="showCode" class="relative">
+      <button
+        type="button"
+        class="absolute right-3 top-3 rounded-md border border-surface-300 bg-white px-2 py-1 text-[11px] text-surface-600 transition-colors hover:bg-surface-100"
         @click="copy"
       >
         <i :class="copied ? 'pi pi-check' : 'pi pi-copy'" class="mr-1 text-[10px]" />
         {{ copied ? 'Copied' : 'Copy' }}
       </button>
-    </header>
-    <pre
-      class="overflow-x-auto p-4 text-xs leading-relaxed"
-    ><code :class="`hljs language-${language}`" v-html="highlighted" /></pre>
+      <pre class="overflow-x-auto px-4 pb-4 pt-12 text-xs leading-relaxed"><code v-if="!highlightPhrases?.length" :class="`hljs language-${language}`" v-html="highlighted" /><code v-else :class="`hljs language-${language}`"><span v-for="(line, index) in highlightedLines" :key="index" class="code-line" :class="{ 'code-line--active': line.active }" v-html="line.html" /></code></pre>
+    </div>
   </figure>
 </template>
 
@@ -89,5 +116,17 @@ async function copy() {
 /* hljs 기본 배경 제거 — 부모 컨테이너 톤(흰색)이 보이도록 */
 .hljs {
   background: transparent !important;
+}
+
+.code-line {
+  display: block;
+  min-height: 1.5em;
+}
+
+.code-line--active {
+  margin: 0 -0.5rem;
+  border-left: 3px solid var(--p-primary-500);
+  background: var(--p-primary-50);
+  padding: 0 0.5rem;
 }
 </style>
