@@ -130,6 +130,7 @@ export const infraMonitoring: Project = {
     techRationale: [
       {
         question: 'PgBouncer 를 도입한 이유',
+        hidden: true,
         tech: 'PgBouncer',
         preface:
           '업체 수 증가에 대비해 신규 클라우드 DB 서버를 추가 도입했지만 예상보다 사양이 부족해 CPU 가 100% 까지 치솟는 문제가 발생했습니다. 이를 해소하기 위해 신규 서버를 기존 DB 서버로 이전·통합하는 작업이 진행됐고, 이 통합 과정에서 read/write 가 여러 포트로 분산되어 있던 구조를 단일 엔드포인트로 정리하고 다수 Edge 서버의 동시 접속을 안전하게 처리하기 위해 팀에서 PgBouncer 를 함께 도입했습니다. 제가 고른 기술은 아니고, 이후 Grafana 데이터 소스를 Replica 로 옮기는 작업을 이 구조 위에서 했습니다.',
@@ -142,23 +143,22 @@ export const infraMonitoring: Project = {
         question: 'Streaming Replication 을 선택한 이유',
         tech: 'Streaming Replication',
         preface:
-          '클라우드 DB 통합 이후에도 Grafana 대시보드가 가져가는 읽기 트래픽이 누적되면서 클라우드 사업자의 아웃바운드 네트워크 계약 기준을 초과해 추가 비용이 발생하기 시작했습니다. 저는 Prometheus 로 메트릭을 쌓아 부하의 상당 부분이 Grafana 읽기 쿼리에서 온다는 것을 확인하고 읽기/쓰기 분리의 근거를 데이터로 제시했습니다. 이를 바탕으로 사내 Replica 로 읽기를 옮기기로 팀 내에서 결정했고, 복제 방식은 후보로 검토한 Logical Replication · pgpool · Patroni HA 중 Streaming Replication 으로 정해졌습니다 — 방식 선택 자체는 팀의 판단이었습니다.',
+          'Prometheus 메트릭으로 Grafana 읽기 쿼리가 DB 부하와 아웃바운드 트래픽의 주요 원인임을 확인했습니다. 읽기 트래픽을 사내 Replica로 분리하기 위해 Streaming Replication을 적용했습니다.',
         reasons: [
-          'PostgreSQL 네이티브 기능이라 별도 컴포넌트 도입 없이 빠르게 적용할 수 있었고, 운영 복잡도가 낮았습니다.',
-          '물리 복제(byte-level) 방식이라 TimescaleDB 의 하이퍼테이블 · Continuous Aggregate · 확장 객체가 모두 그대로 복제되어 추가 호환성 검증이 필요 없었습니다.',
+          'PostgreSQL 네이티브 기능으로 별도 복제 컴포넌트 없이 읽기·쓰기를 분리했습니다.',
+          'TimescaleDB 하이퍼테이블·연속집계 등 확장 객체를 그대로 복제할 수 있었습니다.',
         ],
       },
       {
         question: 'Grafana Alloy 를 도입한 이유',
         tech: 'Grafana Alloy',
         preface:
-          'Edge 서버가 업체 내부망에 있어 외부에서 접근할 수 없으므로 처음부터 push 방식으로 시작했고, 초기 구성은 노드마다 Prometheus agent · node_exporter · Promtail 을 각각 sh 스크립트로 설치하고 중앙 Prometheus 서버가 이를 수신하는 형태였습니다. 노드가 늘수록 한 대에 프로세스 세 개와 설정 파일 세 벌을 따로 맞춰야 해서 유지보수가 부담이 됐고, 이를 단일 에이전트로 정리하는 편이 낫다고 판단해 Grafana Alloy 로 전환했습니다.',
+          '외부에서 접근할 수 없는 Edge 서버마다 Prometheus agent·node exporter·Promtail을 따로 설치하던 구성이었습니다. 배포와 운영 대상을 하나로 줄이기 위해 Grafana Alloy로 통합했습니다.',
         decision:
           '성능보다는 세 가지 조건을 모두 만족하는지로 판단했습니다. Edge 가 업체 내부망에 있어 중앙에서 pull 할 수 없으니 push(remote_write) 를 지원할 것, 이미 Grafana 로 시각화·알람을 운영 중이니 같은 생태계 안에서 이어질 것, 현장에 한번 깔면 오래 두고 쓰는 만큼 벤더가 공식으로 지원하는 표준 에이전트일 것 — Alloy 가 셋을 모두 만족했습니다.',
         reasons: [
-          '내장 unix exporter 로 호스트 지표를 직접 수집해 node_exporter 를 별도 설치·기동할 필요가 없어졌고, 노드당 systemd unit 과 설정 파일이 하나로 줄었습니다.',
-          'River 설정 언어로 환경 변수 기반 라벨링·라우팅·queue_config 같은 운영 옵션을 한 파일에서 선언적으로 관리할 수 있어 다수 Edge 노드에 sh 스크립트로 일괄 배포·운영하기에 적합했습니다.',
-          'Grafana 생태계와 자연스럽게 결합되어 Edge 메트릭 수집 → VictoriaMetrics 저장 → Grafana 시각화·알람까지 동일 벤더 스택 안에서 일관되게 흐를 수 있습니다.',
+          '내장 unix exporter로 노드당 프로세스·설정 파일을 3개에서 1개로 줄였습니다.',
+          '환경 변수 기반 설정과 remote_write를 이용해 다수 Edge 노드를 같은 방식으로 배포했습니다.',
         ],
         tradeoffs: [
           'River 라는 전용 설정 언어를 따로 익혀야 했고, Prometheus 설정을 전제로 쓰인 자료를 그대로 가져다 쓸 수 없었습니다.',
@@ -168,6 +168,7 @@ export const infraMonitoring: Project = {
       },
       {
         question: 'VictoriaMetrics 를 선택한 이유',
+        hidden: true,
         tech: 'VictoriaMetrics',
         preface:
           '에이전트를 Alloy 로 바꾸면서 수신·저장 계층도 함께 옮겼습니다. 초기에는 중앙 Prometheus 서버가 각 노드의 remote_write 를 받아 저장했는데, 노드 수와 보관 기간이 늘수록 저장소 쪽이 먼저 한계에 닿을 것으로 보고 VictoriaMetrics 로 교체했습니다.',

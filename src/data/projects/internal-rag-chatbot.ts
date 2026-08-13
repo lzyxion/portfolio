@@ -124,6 +124,7 @@ export const internalRagChatbot: Project = {
     techRationale: [
       {
         question: 'LangChain 을 선택한 이유',
+        hidden: true,
         tech: 'LangChain',
         preface:
           'RAG 파이프라인(검색·리랭크·생성·멀티턴·함수콜링)을 빠르게 조립하면서도 특정 추상화에 갇히지 않아야 했고, LangChain 을 채택하되 고수준 리트리버 래퍼 대신 LCEL 로 각 단계를 직접 조합하는 방식을 택했습니다.',
@@ -143,13 +144,12 @@ export const internalRagChatbot: Project = {
         question: '자체 호스팅 vLLM 을 선택한 이유',
         tech: 'vLLM',
         preface:
-          '사내 문서를 외부 클라우드 LLM 에 올릴 수 없는 보안 요건 때문에, 생성·임베딩·리랭커 모델을 사내 GPU 서버에 직접 띄워야 했고 서빙 엔진으로 vLLM 을 택했습니다.',
+          '사내 문서를 외부 클라우드 LLM에 보낼 수 없어, 생성·임베딩·리랭커 모델을 사내 GPU 서버에서 서빙해야 했습니다. OpenAI 호환 API를 제공하는 vLLM을 선택했습니다.',
         decision:
           '자체 호스팅 자체는 보안 요건이 정해준 것이라 선택지가 아니었고, 실제 결정은 서빙 엔진이었습니다. 판단 기준을 "GPU 한 장에 생성·임베딩·리랭커 세 모델을 동시에 올릴 수 있는가" 와 "클라이언트 코드를 바꾸지 않고 모델을 갈아끼울 수 있는가" 로 잡았고, OpenAI 호환 API 를 그대로 노출한다는 점이 두 번째 조건을 해결했습니다.',
         reasons: [
-          '사내 서버에서 모델을 자체 호스팅해 사내 문서가 외부로 나가지 않도록 데이터 경계를 지킬 수 있었습니다.',
-          'OpenAI 호환 API 를 노출해 ChatOpenAI · OpenAIEmbeddings 를 그대로 붙일 수 있어, 클라이언트 코드 수정 없이 모델(Qwen3 · bge-m3 · bge-reranker)만 교체할 수 있었습니다.',
-          '--enable-auto-tool-choice 로 툴콜링을 지원해 함수콜링 에이전트를 자체 모델에서 구동할 수 있고, 미지원 환경에선 결정적 파이프라인으로 폴백하도록 런타임 토글을 뒀습니다.',
+          '문서와 모델 호출이 사내망 안에서 끝나도록 데이터 경계를 유지했습니다.',
+          '생성·임베딩·리랭커를 같은 OpenAI 호환 인터페이스로 연동해 모델 교체 비용을 낮췄습니다.',
         ],
         tradeoffs: [
           '클라우드 API 였다면 신경 쓰지 않았을 것들이 전부 제 몫이 됐습니다. GPU 한 장(RTX 5090)에 세 모델을 얹기 위해 메모리를 직접 배분하고(생성 0.78 · 임베딩 0.06 · 리랭크 0.06), 컨텍스트 길이를 양자화 선택과 함께 맞춰야 했습니다.',
@@ -160,13 +160,12 @@ export const internalRagChatbot: Project = {
         question: 'pgvector 를 선택한 이유',
         tech: 'pgvector',
         preface:
-          '벡터 저장소로 전용 벡터DB(예: 별도 엔진) 대신 PostgreSQL 확장인 pgvector 를 택했습니다.',
+          '사내 문서 규모와 단독 운영 환경에서는 전용 벡터 DB보다 PostgreSQL 확장인 pgvector가 적합하다고 판단했습니다.',
         decision:
           '전용 벡터DB 를 들이면 검색 기능은 더 풍부했겠지만, 사내망 폐쇄 환경에서 혼자 운영하는 스택에 컴포넌트를 하나 더 늘리는 비용이 그보다 컸습니다. 코퍼스가 사내 문서 규모라 전용 엔진이 필요한 구간이 아니라고 보고, 이미 운영·백업 방식을 아는 PostgreSQL 안에서 끝내는 쪽을 택했습니다.',
         reasons: [
-          '이미 익숙한 PostgreSQL 운영·백업 자산을 그대로 활용할 수 있어, 별도 인프라를 새로 들이지 않고 도입할 수 있었습니다.',
-          'langchain-postgres 의 PGVector(psycopg3)로 표준 연동되고, JSONB 메타데이터에 $in 필터를 걸어 선택한 부서(share)·출처 단위로 검색 범위를 좁힐 수 있었습니다.',
-          'collection 단위로 임베딩을 분리 관리하고 임베딩 차원(bge-m3 = 1024)을 컬럼 차원으로 고정해, 운영·재적재 시 스키마를 명확히 통제할 수 있었습니다.',
+          '기존 PostgreSQL 운영·백업 방식 안에서 벡터 저장소를 운영했습니다.',
+          '부서·출처 메타데이터 필터로 검색 범위를 제어했습니다.',
         ],
         tradeoffs: [
           '전용 벡터DB 가 기본으로 제공하는 하이브리드 검색·필터 최적화 같은 기능은 직접 만들거나 포기해야 합니다. 검색 정밀도는 벡터 검색을 넓게 가져간 뒤 리랭커로 잘라내는 2단 구조로 확보했습니다.',
@@ -175,6 +174,7 @@ export const internalRagChatbot: Project = {
       },
       {
         question: '문서 파싱에 unstructured 를 선택한 이유',
+        hidden: true,
         tech: 'unstructured',
         preface:
           'pdf·docx·pptx 에 스캔 PDF·이미지까지 섞인 사내 문서를 하나의 적재 파이프라인으로 읽어야 했고, 포맷마다 파서를 따로 붙이는 대신 unstructured 를 공통 파싱 계층으로 택했습니다.',
@@ -195,6 +195,7 @@ export const internalRagChatbot: Project = {
     codeSections: [
       {
         slug: 'model-selection',
+        hidden: true,
         title: 'Model Selection · 오픈 모델 3종 선정 기준',
         icon: 'pi pi-microchip-ai',
         headline:
@@ -236,11 +237,11 @@ export const internalRagChatbot: Project = {
         title: 'RAG Pipeline · 검색→리랭크→생성',
         icon: 'pi pi-sitemap',
         headline:
-          '질의가 답변이 되기까지의 파이프라인입니다. 검색 → 리랭크 → 생성을 LCEL Runnable 로 직접 조합했고, 함수콜링 에이전트가 이 2단 검색을 하나의 도구로 호출합니다.',
+          '검색 품질과 답변 근거를 함께 통제하는 파이프라인입니다. 검색 → 리랭크 → 생성을 LCEL Runnable로 조합하고, 근거가 없는 답변은 생성하지 않도록 했습니다.',
         note: [
           '검색 — 질문을 멀티쿼리로 확장하고 bge-m3 임베딩으로 pgvector 에서 top_k=20 후보를 넓게 가져옵니다(recall). 선택한 부서(share) 단위로 검색 범위를 좁힙니다.',
           '리랭크 — bge-reranker-v2-m3 크로스인코더가 후보를 질의 적합도로 재정렬해 top_n=5 만 남깁니다(precision). 임베딩 유사도만으로 상위에 끼던 오답 청크를 여기서 걸러냅니다.',
-          '생성 — 남은 근거 컨텍스트로 Qwen3 가 답변을 만들고 SSE 로 토큰을 스트리밍합니다. 근거가 부족하면 에이전트가 재검색을 판단합니다.',
+          '그라운딩 — strict 모드에서 문서 검색을 강제하고, 점수 기준을 통과한 컨텍스트만 Qwen3에 전달합니다. 답변에는 [n] 출처를 함께 표기합니다.',
         ],
         media: [
           {
@@ -254,6 +255,7 @@ export const internalRagChatbot: Project = {
       },
       {
         slug: 'answer-quality',
+        hidden: true,
         title: 'Answer Quality · 답변 관련성을 높이는 장치',
         icon: 'pi pi-filter',
         headline:
@@ -282,6 +284,7 @@ export const internalRagChatbot: Project = {
       },
       {
         slug: 'evaluation',
+        hidden: true,
         title: 'Evaluation · 질의 로그와 Phoenix 트레이싱',
         icon: 'pi pi-chart-line',
         headline:

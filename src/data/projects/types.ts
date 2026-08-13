@@ -47,6 +47,8 @@ export interface SectionTable {
 
 export interface CodeSection {
   slug: string
+  /** 포트폴리오 본문에서 숨기되 원본 내용은 보존 */
+  hidden?: boolean
   title: string
   icon?: string
   headline?: string
@@ -65,6 +67,8 @@ export interface CodeSection {
  */
 export interface TechRationale {
   question: string
+  /** 포트폴리오 본문에서 숨기되 원본 내용은 보존 */
+  hidden?: boolean
   preface?: string
   /** 이 결정이 만족해야 했던 제약 조건 */
   constraints?: string[]

@@ -2,7 +2,7 @@ import type { Project } from './types'
 
 export const dataPlatform: Project = {
     slug: 'data-platform',
-    title: '데이터 파이프라인 구축 및 사내 자체 관리 대시보드 · 확장형 API 서버 개발',
+    title: 'Airflow·dbt 기반 데이터 표준화 파이프라인 및 멀티테넌시 API 구축',
     period: '2025.11 ~ 2026.06',
     year: 3,
     contribution: 100,
@@ -10,7 +10,7 @@ export const dataPlatform: Project = {
     repos: ['lzyxion/dbt-sensor', 'lzyxion/sensor-gateway-portfolio'],
     tags: ['Airflow', 'dbt', 'FastAPI', 'Vue.js', 'Docker', 'Nginx', 'GitLab CI/CD'],
     summary:
-      'Grafana 시각화의 한계와 파이프라인 파편화를 계기로, Airflow·dbt 표준화 파이프라인과 멀티테넌시 기반 사내 자체 관리 대시보드·확장형 API 서버를 개발해 완성한 프로젝트입니다.',
+      '파이프라인 파편화와 Grafana 시각화의 한계를 계기로, Airflow·dbt 표준화 파이프라인과 멀티테넌시 API·사내 자체 관리 대시보드를 구축한 프로젝트입니다.',
     problem: {
       situation: [
         '업체가 누적되면서 집계 방식과 업체별 DB 에 흩어진 파이프라인은 관리 비용이 계속 늘어났고, Grafana 기본 시각화로는 업체별 맞춤 요구를 담기 어려워 자체 대시보드에 대한 요구가 커졌습니다. 여기에 신규 비즈니스 대응까지 겹치면서, 파이프라인 중앙화와 자체 서비스 기반을 함께 마련해야 하는 상황이었습니다.',
@@ -27,35 +27,35 @@ export const dataPlatform: Project = {
             '업체·장비별 센서 테이블이 컬럼 명세·단위·이상값 처리 기준까지 제각각이라, 새 집계·리포트를 추가할 때마다 수기 SQL 로 정제 로직을 다시 짜 작업 한 건에 3시간씩 걸렸습니다.',
         },
         {
-          title: '전 영역을 떠안은 신규 서비스',
+          title: '업체별 데이터·권한을 분리해야 하는 공통 API',
           description:
-            '사내 자체 관리 대시보드와 후속 서비스의 공통 기반이 될 멀티테넌시 기반 API 서버를, 백엔드부터 프론트엔드·인프라까지 전담으로 빠르게 완성해야 했습니다.',
+            '업체마다 DB와 센서 구성이 다른 환경에서, 고객사별 서비스를 따로 만들면 기능 추가·배포·권한 관리가 반복됩니다. 하나의 API로 여러 업체를 수용하되, 다른 업체 데이터에 접근할 수 없도록 격리와 권한 통제가 필요했습니다.',
         },
       ],
     },
     goals: [
       '업체별 DB 에 흩어진 집계 정의를 중앙에서 관리·스케줄링하는 파이프라인 체계로 전환',
       '파편화된 센서 데이터의 표준화·이상값 정제 규칙을 코드로 강제해 데이터 품질과 작업 속도를 함께 확보',
-      '여러 업체를 하나의 서비스로 수용하는 멀티테넌시 기반 자체 서비스 완성 — 후속 서비스 확장 대비',
+      '테넌트별 데이터·권한을 분리하면서 여러 업체를 하나의 API·관리 서비스로 수용',
     ],
     solutions: [
       {
         title: '집계를 코드로 — Airflow 파이프라인 중앙화',
         approach:
           '집계를 DB 기능에 묶는 대신 코드로 끌어내 Airflow 로 중앙화했습니다. DAG task 로 SQL·Python·외부 호출을 자유롭게 조합하고, cron 기반 정확한 실행 시점과 의존성·재시도·백필 같은 운영 컨트롤을 확보했으며, 흩어졌던 집계 정의를 단일 Airflow 인스턴스로 모았습니다.',
-        result: '파이프라인 운영 공수 약 80% 절감',
+        result: '센서별 수기 집계 정의·수정 반복 작업 기준 약 80% 감소',
       },
       {
         title: 'dbt 표준화 — 데이터 품질을 코드로 강제',
         approach:
           '전처리·표준화 로직을 코드로 통일하기 위해 Airflow 와 자연스럽게 결합되는 dbt 를 도입했습니다. ref()·sources 로 의존성·lineage 를 자동 추적해 staging → intermediate → mart 로 표준화하고, tests·macros 로 이상값 검출·정제 규칙을 모든 모델에 일관 적용해 데이터 품질을 코드로 강제했습니다.',
-        result: '신규 집계/리포트 추가 약 3시간 → 약 15분 (약 12배 가속)',
+        result: '신규 집계 추가: 센서별 수기 SQL·Cagg 작성 약 3시간 → 표준 모델 설정·검증 약 15분',
       },
       {
-        title: '생성형 AI 레버리지 — 설계부터 배포까지 전담',
+        title: '테넌트 격리와 RBAC을 갖춘 공통 API 구축',
         approach:
-          '생성형 AI 를 단순 코드 자동완성을 넘어 설계·리팩터링·반복 작업까지 맡기는 방식으로 활용해 생산성을 끌어올렸습니다. 그 위에서 멀티테넌시 기반 사내 자체 관리 대시보드를 아키텍처 설계부터 Docker·Nginx·GitLab CI/CD 배포까지 전담 개발로 완성하고, 후속 서비스가 그대로 올라탈 확장 기반까지 마련했습니다.',
-        result: '멀티테넌시 기반 서비스 전담 완성 — 후속 서비스 확장 기반 마련',
+          '여러 업체를 하나의 서비스에서 안전하게 다루기 위해 FastAPI 기반 API 서버에 테넌트·세션 주입 경로와 Casbin RBAC 을 구성하고, async SQLAlchemy 로 Replica 의 마트 데이터를 조회하도록 설계했습니다. 테넌트별 연결 풀과 요청 제한을 두고, Replica 연결 실패 시 Primary 로 전환·알림하도록 구성했습니다. Vue 관리 대시보드와 함께 Docker·Nginx·GitLab CI/CD 배포 기반까지 구축해, 후속 서비스가 공통으로 사용할 API·운영 기반을 마련했습니다.',
+        result: '테넌트별 DB 격리·권한 통제·연결 풀·Replica fallback을 갖춘 공통 API와 관리 서비스 기반 마련',
       },
     ],
     review: [
@@ -65,7 +65,7 @@ export const dataPlatform: Project = {
       },
       {
         label: '배운 점',
-        text: '생성형 AI 를 단순 자동완성이 아니라 설계·리팩터링·반복 작업을 맡기는 파트너로 쓰는 개발 워크플로를 확립했고, 그 생산성이 멀티테넌시 서비스를 전담으로 완성할 수 있었던 바탕이 되었습니다.',
+        text: '데이터 파이프라인과 API 서버를 한 흐름으로 설계하면서, 데이터 모델의 표준화가 서비스 API 의 일관성과 후속 기능 확장성까지 좌우한다는 점을 배웠습니다.',
       },
       {
         label: '이어진 과제',
@@ -73,40 +73,41 @@ export const dataPlatform: Project = {
       },
     ],
     outcome:
-      'Airflow + dbt 표준화 파이프라인 도입으로 운영 공수 약 80% 절감·신규 집계 추가 작업 약 12배 가속, 멀티테넌시 기반 사내 자체 관리 대시보드를 아키텍처 설계부터 배포까지 전담 개발 — 후속 서비스 확장 기반 마련.',
+      'Airflow + dbt 표준화 파이프라인으로 센서별 수기 집계 정의·수정 반복 작업을 약 80% 줄이고, 신규 집계 추가 작업을 약 3시간에서 약 15분으로 단축. 멀티테넌시 API·사내 자체 관리 대시보드와 배포 기반을 구축해 후속 서비스 확장 기반을 마련했습니다.',
     metrics: [
       {
-        label: '데이터 파이프라인 운영 공수 (상대 비율)',
+        label: '반복 운영 작업 시간 (체감 기준)',
         beforeValue: 100,
         beforeDisplay: '100%',
         afterValue: 20,
         afterDisplay: '20%',
-        improvement: '약 80% 절감',
+        improvement: '약 80% 감소',
         unit: '%',
       },
       {
-        label: '신규 집계/리포트 추가 작업 시간',
+        label: '신규 집계 추가 작업 시간',
         beforeValue: 3,
         beforeDisplay: '약 3시간',
         afterValue: 0.25,
         afterDisplay: '약 15분',
-        improvement: '약 12× 빨라짐',
+        improvement: '약 3시간 → 약 15분',
         unit: 'h',
       },
     ],
     roles: [
-      'Apache Airflow 기반의 자동화 배치 파이프라인 및 집계 DAGs 를 구축하여 운영 공수 80% 절감',
+      'Apache Airflow 기반 자동화 배치 파이프라인과 집계 DAG를 구축해 센서별 수기 집계 정의·수정 반복 작업 약 80% 감소',
       'dbt 를 도입하여 파편화된 제조 데이터 표준화 및 데이터 이상치 (Outlier) 정제 파이프라인 구현',
-      '생성형 AI 를 활용한 생산성 극대화로 멀티테넌시 기반 사내 자체 관리 대시보드 (후속 서비스 확장 기반) 를 아키텍처 설계부터 배포까지 전담 개발',
+      'FastAPI·Casbin 기반 멀티테넌시 API에 테넌트별 연결 풀·요청 제한·Replica fallback을 구성하고, 사내 자체 관리 대시보드를 Docker·Nginx·GitLab CI/CD 배포까지 개발',
     ],
     media: [
       {
         label: '아키텍처',
-        src: `${import.meta.env.BASE_URL}architectures/iot_dataplatform_architecture.svg`,
-        alt: '데이터 표준화 파이프라인 · 사내 자체 관리 대시보드 API 서버 아키텍처',
+        src: `${import.meta.env.BASE_URL}architectures/data-platform-multitenant.svg`,
+        alt: '공유 TimescaleDB Primary·Replica 기반 데이터 표준화 파이프라인과 멀티테넌시 FastAPI 아키텍처',
         description: [
-          '3년차에 구현한 범위를 중심으로 그린 아키텍처입니다. 1·2년차에 구축한 수집·복제 인프라는 클라우드 TimescaleDB Primary 와 사내 Replica 두 노드 (기존 표기) 로만 남기고, 사내 내부 서버에 신설한 Airflow + dbt 표준화 파이프라인과 FastAPI · Vue 서비스 계층을 다룹니다.',
-          '이 파이프라인이 다루는 원본은 현재 전체 업체 기준 센서 약 2,000개를 1분 주기로 받아 하루 288만 행 · 약 600MB 규모입니다. Airflow 가 dbt 모델 (staging → intermediate → mart) 을 스케줄링해 클라우드 원본을 표준화·집계된 마트 테이블로 가공·적재하고 (mart write), 마트는 Streaming Replication 으로 사내 Replica 에 내려옵니다. FastAPI 가 Replica 의 마트를 읽어 사내 자체 관리 대시보드 (Vue) 와 관리자 페이지에 REST API 로 제공하며, 후속 서비스가 올라갈 공통 API 기반이 됩니다.',
+          '클라우드의 단일 TimescaleDB Primary 인스턴스 안에 Master DB와 업체별 Tenant DB가 함께 있습니다. Primary의 전체 DB를 사내 TimescaleDB Replica 인스턴스로 Streaming Replication해, Replica에서도 Tenant A·B…N DB를 구분해 조회합니다.',
+          'Airflow가 업체별 Tenant DB의 원본을 읽어 dbt 모델(staging → intermediate → mart)을 실행하고, 표준화·집계한 마트를 해당 Primary DB에 적재합니다. 전체 업체 기준 약 2,000개 센서에서 1분마다 수집되는 데이터(하루 약 288만 행)를 테넌트별 DAG로 처리합니다.',
+          'FastAPI는 JWT·X-Tenant-ID로 요청 테넌트를 식별하고, Master DB의 접속 정보와 RBAC 정책을 바탕으로 해당 Tenant Replica에 연결합니다. 관리 대시보드·관리자 페이지에는 REST API를 제공하고, Replica 연결에 실패하면 해당 Tenant Primary로 fallback합니다.',
         ],
       },
     ],
@@ -115,68 +116,20 @@ export const dataPlatform: Project = {
         question: 'Airflow 를 도입한 이유',
         tech: 'Airflow',
         preface:
-          '1년차에 도입한 TimescaleDB Continuous Aggregate(Cagg) 로 대부분의 집계 처리를 운영해왔지만, 업체 수가 늘어나면서 한계가 드러났습니다. Cagg 는 단일 SELECT 표현 안에서만 가능해 복잡한 JOIN·전처리·조건 분기를 담기 어려웠고, refresh_interval 기반이라 "정확한 시점" 스케줄링이 불가능했으며, 업체별 DB 가 늘면서 각 DB 의 Cagg 정의·관리 비용이 누적되었습니다. 이를 해소하기 위해 표준화·집계 파이프라인을 Airflow 로 전환·중앙화하기로 결정했습니다.',
-        decision:
-          'Cagg 를 더 잘게 쪼개거나 뷰를 겹쳐 버티는 방법도 있었지만, 그건 업체가 늘어날 때마다 관리 대상이 같이 늘어나는 방향이었습니다. 집계를 DB 기능 안에 두느냐 코드로 꺼내느냐의 문제로 보고, 업체가 늘어도 운영 공수가 선형으로 늘지 않으려면 정의가 한 곳에 모여야 한다는 기준으로 코드 쪽을 택했습니다.',
+          '업체별 Cagg 정의가 늘면서 복잡한 전처리·집계와 운영 시점 제어가 어려워졌습니다. 집계 정의를 중앙에서 관리할 수 있도록 Airflow로 전환했습니다.',
         reasons: [
-          'DAG task 로 SQL · Python · 외부 호출까지 자유롭게 조합 가능 — Cagg 의 단일 SELECT 표현력 제약을 우회하고 복잡한 전처리·집계 로직을 코드로 구성할 수 있습니다.',
-          'cron 기반 정확한 실행 시점 + 의존성·재시도·SLA·백필 같은 운영 컨트롤 확보 — 단순 "주기 refresh" 만 가능한 Cagg 대비 운영 시점 통제력이 강화됩니다.',
-          '업체별 DB 마다 흩어져 있던 Cagg 정의를 단일 Airflow 인스턴스의 DAG 으로 중앙 집중 관리 — 업체가 늘어도 운영·변경 공수가 선형으로 증가하지 않습니다.',
-        ],
-        tradeoffs: [
-          'DB 안에서 알아서 돌던 갱신이 이제 별도 스케줄러 위에서 돕니다. 집계가 DB 와 함께 죽고 사는 대신, 상시 운영해야 할 컴포넌트가 하나 늘었습니다.',
-          '모든 업체의 집계가 단일 Airflow 인스턴스에 의존하게 됩니다. 테넌트별 3분 간격 staggered cron 과 Pool 슬롯으로 동시 실행·동시 쓰기를 분산해 이 집중도를 관리하고 있습니다.',
+          '스케줄·의존성·재시도·백필을 코드로 관리해 집계 실행을 통제했습니다.',
+          '테넌트별 동적 DAG와 Pool으로 신규 업체 추가 및 동시 쓰기 부하를 관리했습니다.',
         ],
       },
       {
         question: 'dbt 를 도입한 이유',
         tech: 'dbt',
         preface:
-          '업체·장비별로 누적되어 온 센서 테이블이 파편화되어 컬럼 명세·단위·이상값 처리 기준이 제각각이라 관리 비용이 누적되었고, 이상값(Outlier) 정제 필요성도 함께 커졌습니다. 전처리·표준화 로직을 코드로 통일·중앙 관리할 수단이 필요했고, Airflow 와 자연스럽게 결합되는 dbt 를 채택해 데이터 표준화·중앙 관리 체계를 구축했습니다.',
-        decision:
-          '전처리를 Python 으로 옮겨 파이프라인 코드 안에서 처리하는 방법도 있었지만, 그러면 팀이 이미 쓰고 있던 SQL 자산을 버리고 다시 쓰는 일이 됩니다. SQL 을 그대로 두고 그 위에 의존성·테스트·문서만 얹는 쪽을 택했고, 그래서 도입 비용이 거의 들지 않았습니다.',
+          '업체·장비별 센서 테이블은 컬럼·단위·정제 기준이 달랐습니다. 기존 SQL 자산을 유지하면서 표준화 규칙을 코드로 관리하기 위해 dbt를 도입했습니다.',
         reasons: [
-          'ref() · sources 로 모델 간 의존성·lineage 가 자동 추적되어 파편화된 테이블을 staging → intermediate → mart 의 일관된 흐름으로 표준화·중앙 관리할 수 있게 되었습니다.',
-          'tests · macros 로 이상값 검출·전처리 규칙을 모든 모델에 일관 적용 — 수기 SQL 로 흩어져 있던 정제 로직을 제거하고 데이터 품질을 코드로 강제했습니다.',
-          '기존 팀 SQL 자산을 그대로 살리면서 모델링·테스트·문서화·lineage 가 한 번에 결합 — 도입 학습 곡선이 낮고 운영 공수 절감 효과가 빠르게 가시화되었습니다.',
-        ],
-        tradeoffs: [
-          'dbt 는 SELECT 결과를 테이블로 만드는 도구라 적재 이전 단계(수집·외부 API 호출)는 담을 수 없습니다. 그 부분은 Airflow task 로 남겨 두 도구의 역할을 갈랐습니다.',
-          'Cosmos 가 dbt 모델 하나를 Airflow 태스크 하나로 펼치기 때문에, 모델이 늘수록 공유 DB 호스트에 동시 쓰기가 폭증할 수 있습니다. 전용 Pool 슬롯으로 동시 쓰기에 상한을 두고 씁니다.',
-        ],
-      },
-      {
-        question: 'FastAPI 를 선택한 이유',
-        tech: 'FastAPI',
-        preface:
-          '사내 자체 관리 대시보드와 후속 서비스가 공통으로 올라갈 API 백엔드는 다룰 수 있는 후보인 Spring Boot 와 FastAPI 사이에서 검토했고, 빠른 출시·시계열 조회 성능·API 명세 동기화 비용을 종합적으로 고려해 FastAPI 를 채택했습니다.',
-        decision:
-          '판단 기준을 프레임워크의 완성도가 아니라 "혼자 전담하는 상황에서 어디에 시간을 덜 쓰는가" 에 뒀습니다. 백엔드와 프론트엔드를 같은 사람이 만드는 구조라 API 명세를 따로 맞추는 비용이 특히 크게 다가왔고, pydantic 모델 하나에서 입력 검증과 OpenAPI 스펙이 동시에 나오는 쪽을 택했습니다. 파이프라인이 이미 Python 이라 언어를 하나로 유지할 수 있다는 점도 함께 봤습니다.',
-        reasons: [
-          'pydantic 모델 기반으로 OpenAPI(Swagger) 스펙이 자동 생성·동기화되어 프론트엔드(Vue) 와의 API 계약을 별도 어노테이션·설정 없이 일치시킬 수 있습니다.',
-          '타입 힌트 기반 자동 검증과 가벼운 의존성 주입으로 보일러플레이트가 적어, 전담 개발 환경에서 백엔드 개발 속도를 빠르게 확보할 수 있었습니다.',
-          'async/await 비동기 처리로 시계열 데이터 조회 같은 I/O 바운드 워크로드에서 Spring Boot 동기 처리 대비 더 높은 동시성을 확보할 수 있을 것으로 판단했습니다.',
-        ],
-        tradeoffs: [
-          'Spring Boot 처럼 인증·권한·트랜잭션에 정해진 방식이 있는 것이 아니라, 구조를 직접 정해야 하는 범위가 넓습니다. 미들웨어 → Depends 체인으로 테넌트·세션 주입 경로를 만들고 Casbin 으로 RBAC 을 붙인 것도 그래서였습니다.',
-          '동시성 이점은 I/O 바운드일 때의 이야기라, 비동기 드라이버를 쓰지 않거나 블로킹 호출이 섞이면 그대로 사라집니다. 세션·엔진 계층을 전부 async SQLAlchemy 로 맞춰야 했습니다.',
-        ],
-      },
-      {
-        question: 'Vue 를 선택한 이유',
-        tech: 'Vue',
-        preface:
-          '프론트엔드는 React 와 Vue 두 후보를 검토했고, 생성형 AI 를 활용한 개발 환경·생태계 표준화·UI 라이브러리 통합 비용을 종합적으로 고려해 Vue 를 채택했습니다.',
-        decision:
-          '판단 기준을 프레임워크 자체의 우열이 아니라 "생성형 AI 가 만든 코드를 내가 얼마나 빨리 읽고 고칠 수 있는가" 에 뒀습니다. 프론트엔드가 제 주력이 아닌 상태에서 검토 속도가 곧 개발 속도였고, 상태 관리·라우팅처럼 선택지가 갈리는 지점마다 공식 표준이 정해져 있다는 점이 그 속도를 지켜줬습니다.',
-        reasons: [
-          'React 대비 직관적인 SFC(Single File Component) 문법으로, 생성형 AI 가 만든 코드를 빠르게 검토·수정할 수 있어 초기 개발 생산성을 극대화했습니다.',
-          '컴포넌트를 직접 설계·관리할 정도의 프론트엔드 경험이 부족했고 프로젝트 규모도 그 정도가 아니었기에, Vue Router · Pinia 같은 공식 표준 생태계가 정해져 있다는 점이 적합했습니다.',
-          'PrimeVue 컴포넌트 라이브러리를 그대로 도입해 UI 구성 시간을 단축하고, 사내 자체 관리 대시보드의 비즈니스 로직에 더 많은 시간을 투입할 수 있었습니다.',
-        ],
-        tradeoffs: [
-          'React 에 비해 참고할 자료와 서드파티 선택지가 좁고, 이후 팀이 붙을 때 React 를 쓰던 사람에게는 새로 익혀야 하는 스택이 됩니다.',
-          'UI 를 PrimeVue 에 맡긴 만큼 디자인은 그 라이브러리가 허용하는 범위 안에서 움직입니다. 화면 구성 시간을 산 대가로 세밀한 커스터마이징 자유도를 내줬습니다.',
+          'staging → intermediate → mart 계층과 lineage로 변환 흐름을 표준화했습니다.',
+          'macros·tests로 이상값 정제와 검증 규칙을 공통 적용했습니다.',
         ],
       },
     ],
@@ -557,15 +510,6 @@ async def create_sensor(
     await session.flush()
     await session.refresh(sensor)
     return sensor   # pydantic from_attributes 로 SensorResponse 자동 직렬화`,
-          },
-        ],
-        mediaAbove: true,
-        media: [
-          {
-            label: 'FastAPI 아키텍처',
-            src: `${import.meta.env.BASE_URL}architectures/fastapi-multitenant-architecture.svg`,
-            alt: 'Multi-Tenant FastAPI Gateway · 확장형 API 서버 아키텍처',
-            caption: 'Multi-Tenant FastAPI Gateway — Middleware Chain → Depends 체인 → 테넌트별 read/write 엔진 자동 라우팅 (Replica fallback 포함)',
           },
         ],
       },

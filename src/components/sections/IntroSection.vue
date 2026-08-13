@@ -19,7 +19,7 @@
         </h1>
 
         <p class="mt-6 text-lg font-medium text-surface-600 dark:text-surface-300">
-          이진열 · Lee Jinyeol
+          <strong class="font-bold text-surface-900 dark:text-surface-0">Lee Jinyeol</strong> · 이진열
         </p>
 
         <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-surface-600 dark:text-surface-300">
@@ -36,9 +36,9 @@
         <p class="mt-8 text-base leading-relaxed text-surface-600 dark:text-surface-300">
           약 50개 고객사, 2,000개 센서에서 하루 약 288만 행이 쌓이는 시계열 데이터 환경에서
           데이터 모델링·변환 파이프라인·API·인프라를 연결해 왔습니다. 그 과정에서
-          <strong class="text-surface-800 dark:text-surface-100">Airflow·dbt 기반 데이터 표준화</strong>와
-          <strong class="text-surface-800 dark:text-surface-100">FastAPI 기반 서비스 개발</strong>,
-          <strong class="text-surface-800 dark:text-surface-100">관측성과 장애 예방</strong>으로 운영 효율과 안정성을 개선했습니다.
+          <strong class="text-primary">Airflow·dbt 기반 데이터 표준화</strong>와
+          <strong class="text-primary">FastAPI 기반 서비스 개발</strong>,
+          <strong class="text-primary">관측성과 장애 예방</strong>으로 운영 효율과 안정성을 개선했습니다.
         </p>
         <div class="mt-8 overflow-hidden rounded-lg border border-surface-200 bg-white/70 dark:border-surface-800 dark:bg-surface-900/70">
           <div class="grid divide-y divide-surface-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-surface-800">

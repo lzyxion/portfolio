@@ -332,11 +332,12 @@ function groupMedia(media: MediaItem[]): MediaGroup[] {
         <TechStackTabs :items="asRationaleList(project.techRationale)" />
       </div>
 
-      <!-- 해결 하위: 핵심 코드 -->
+      <!-- 해결 하위: 핵심 구현 -->
       <div
         v-for="section in project.codeSections"
         :key="section.slug"
         :id="`code-${project.slug}-${section.slug}`"
+        v-show="!section.hidden && section.slug !== 'dbt'"
         class="mt-10 scroll-mt-24 border-t border-surface-200/60 pt-10 dark:border-surface-800/60"
       >
         <h3 class="mb-4 flex items-center gap-2 text-lg font-bold text-surface-900 dark:text-surface-0">
