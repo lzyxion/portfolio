@@ -121,9 +121,11 @@ export const infraMonitoring: Project = {
       {
         label: '아키텍처',
         src: `${import.meta.env.BASE_URL}architectures/infra-monitoring.svg`,
-        alt: '스트리밍 복제 기반 IoT 데이터 · 모니터링 아키텍처',
+        alt: 'Replica 기반 조회 부하 분리와 Grafana Alloy 모니터링 흐름',
         description: [
-          '클라우드의 TimescaleDB Primary 앞단에 PgBouncer 를 두어 다수의 Edge 서버에서 들어오는 커넥션을 풀링·재사용하도록 했고, 적재된 IoT 시계열 데이터를 사내 내부 서버의 Replica 로 Streaming Replication 합니다. Grafana 대시보드의 데이터 소스를 Replica 로 격리해 Master 의 부하와 네트워크 아웃바운드 트래픽을 분리했고, 현장 엣지 서버와 클라우드 DB 양쪽에 Grafana Alloy + Prometheus 를 띄워 호스트·DB 메트릭을 VictoriaMetrics 로 수집해 통합 모니터링·알림 체계를 구성했습니다.',
+          '현장 Edge의 데이터는 TimescaleDB Primary에 적재하고, Streaming Replication으로 Replica에 복제했습니다.',
+          'Grafana 조회를 Replica로 분리해 Primary의 적재 부하와 대시보드 조회 부하를 나눴습니다.',
+          'Edge와 DB의 메트릭은 Grafana Alloy가 VictoriaMetrics로 전송하고, Grafana 알림으로 운영 상태를 확인합니다.',
         ],
       },
     ],

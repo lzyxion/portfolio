@@ -103,11 +103,11 @@ export const dataPlatform: Project = {
       {
         label: '아키텍처',
         src: `${import.meta.env.BASE_URL}architectures/data-platform-multitenant.svg`,
-        alt: '공유 TimescaleDB Primary·Replica 기반 데이터 표준화 파이프라인과 멀티테넌시 FastAPI 아키텍처',
+        alt: 'Airflow·dbt 데이터 처리와 FastAPI 멀티테넌시 조회 흐름을 나타낸 아키텍처',
         description: [
-          '클라우드의 단일 TimescaleDB Primary 인스턴스 안에 Master DB와 업체별 Tenant DB가 함께 있습니다. Primary의 전체 DB를 사내 TimescaleDB Replica 인스턴스로 Streaming Replication해, Replica에서도 Tenant A·B…N DB를 구분해 조회합니다.',
-          'Airflow가 업체별 Tenant DB의 원본을 읽어 dbt 모델(staging → intermediate → mart)을 실행하고, 표준화·집계한 마트를 해당 Primary DB에 적재합니다. 전체 업체 기준 약 2,000개 센서에서 1분마다 수집되는 데이터(하루 약 288만 행)를 테넌트별 DAG로 처리합니다.',
-          'FastAPI는 JWT·X-Tenant-ID로 요청 테넌트를 식별하고, Master DB의 접속 정보와 RBAC 정책을 바탕으로 해당 Tenant Replica에 연결합니다. 관리 대시보드·관리자 페이지에는 REST API를 제공하고, Replica 연결에 실패하면 해당 Tenant Primary로 fallback합니다.',
+          'Airflow·dbt — 업체별 센서 데이터를 테넌트별 DAG로 표준화·정제·집계해 저장합니다.',
+          'TimescaleDB — 업체별 DB는 Primary에 분리해 두고, Replica로 복제해 적재와 조회 부하를 나눴습니다.',
+          'FastAPI — JWT·테넌트 식별·RBAC으로 조회를 제어하고, 관리 화면에는 테넌트별 데이터를 제공합니다. Replica 장애 시에는 Primary로 전환합니다.',
         ],
       },
     ],

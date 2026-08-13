@@ -114,10 +114,11 @@ export const internalRagChatbot: Project = {
       {
         label: '아키텍처',
         src: `${import.meta.env.BASE_URL}architectures/internal-rag-chatbot.svg`,
-        alt: '사내 문서 RAG 챗봇 아키텍처 — 자체 호스팅 vLLM · LangChain LCEL · pgvector 사내망 폐쇄 구성',
+        alt: '사내 NAS 문서 적재와 FastAPI 기반 RAG 질의 응답 흐름',
         description: [
-          '사내망 안에서 완결되는 폐쇄 구성입니다. 생성 (Qwen3) · 임베딩 (bge-m3) · 리랭커 (bge-reranker-v2-m3) 모델을 사내 GPU 서버의 vLLM 에 OpenAI 호환 API 로 자체 호스팅해 문서가 외부로 나가지 않고, FastAPI 백엔드가 React (assistant-ui) 챗 UI 까지 단일 이미지 (:8000) 로 함께 서빙합니다.',
-          '질의 시 FastAPI 가 pgvector 유사도 검색 (top_k) 으로 후보를 넓게 모으고 vLLM 리랭커로 top_n 만 남긴 뒤 Qwen3 로 답변을 생성해, SSE 로 토큰과 [n] 출처를 스트리밍합니다. 적재는 NAS 부서별 문서를 share 단위로 증분 동기화해 unstructured 파싱 · 스캔 OCR · 구조 기반 청킹을 거쳐 pgvector 에 벡터로 쌓습니다.',
+          '사내 NAS 문서를 파싱·청킹해 pgvector에 임베딩과 출처 메타데이터로 저장합니다.',
+          '직원 질문은 FastAPI가 검색·리랭크·근거 확인 과정을 거쳐 사내 vLLM에 전달하고, 답변과 [n] 출처를 SSE로 제공합니다.',
+          '문서와 모델 호출은 모두 사내망 안에서 처리합니다.',
         ],
       },
     ],
@@ -247,7 +248,7 @@ export const internalRagChatbot: Project = {
           {
             label: '파이프라인',
             src: `${import.meta.env.BASE_URL}architectures/rag-pipeline.svg`,
-            alt: 'RAG 질의 파이프라인 — 질문 → 벡터 검색(멀티쿼리·bge-m3·pgvector top_k=20) → 리랭크(bge-reranker-v2-m3 top_n=5) → 컨텍스트 조립([n] 출처) → Qwen3 생성, 에이전트 재검색 루프와 SSE 스트리밍 응답',
+            alt: '질문에서 벡터 검색·리랭크·출처 기반 답변 생성으로 이어지는 RAG 파이프라인',
           },
         ],
         mediaAbove: true,

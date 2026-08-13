@@ -111,11 +111,11 @@ export const iiotMonitoring: Project = {
       {
         label: '아키텍처',
         src: `${import.meta.env.BASE_URL}architectures/iiot-monitoring.svg`,
-        alt: '스마트 팩토리 IIoT 데이터 통합 관제 시스템 아키텍처',
+        alt: '현장 수집부터 TimescaleDB 저장과 Grafana 관제까지의 IIoT 데이터 흐름',
         description: [
-          '팀 전체 시스템은 현장 엣지 서버가 IoT 센서·PLC 데이터를 RS-232·485 / LAN 으로 수집해 OPC UA 로 변환한 뒤 TimescaleDB 에 적재하고, Grafana 가 이를 조회해 실시간 관제 대시보드를 제공하는 구조입니다. 장비마다 다른 통신 규격을 엣지에서 OPC UA 한 겹으로 표준화해, 현장 구성이 달라져도 적재 이후 계층은 그대로 쓸 수 있게 했습니다.',
-          '센서마다 1분 주기로 값을 읽고 한 행에 전압·전류·전력 같은 float8 20여 개가 담겨, 센서 하나만으로 하루 1,440행이 쌓입니다. 이 데이터를 현장이 아니라 클라우드에 모은 것이 구조의 핵심 경계입니다 — 엣지는 수집·변환까지만 맡고 저장·조회·집계는 전부 클라우드 TimescaleDB 에서 다뤄, 현장 장비 사양에 좌우되지 않고 조회 성능과 저장 정책을 한 곳에서 관리할 수 있게 했습니다.',
-          '이 흐름 안에서 저는 적재된 데이터를 쿼리로 가공·조회하고 시각화하는 역할을 담당했습니다. 다이어그램의 TimescaleDB 박스 안 세 줄 — 하이퍼테이블·하이퍼 함수, 연속집계(Cagg) 자동 갱신, 압축·파티셔닝 정책 — 이 제가 설계·운영한 범위이고, 그 위에서 Grafana 통합 관제 대시보드를 구축했습니다.',
+          '현장 Edge가 IoT 센서·PLC 데이터를 수집해 OPC UA로 변환하고, 클라우드 TimescaleDB에 적재합니다.',
+          'TimescaleDB에서 시계열 데이터를 저장·집계하고, Grafana가 이를 조회해 실시간 관제 화면을 제공합니다.',
+          '저는 TimescaleDB 조회 쿼리·Continuous Aggregate와 Grafana 대시보드를 담당했습니다.',
         ],
       },
     ],
