@@ -8,20 +8,17 @@ interface SkillGroup {
 }
 
 const skillGroups: SkillGroup[] = [
-  { category: 'Language', items: ['Java', 'Python'] },
-  { category: 'Backend', items: ['Spring Boot', 'FastAPI'] },
+  { category: 'Backend', items: ['Python', 'FastAPI', 'Java', 'Spring Boot'] },
+  { category: 'Data Platform', items: ['Airflow', 'dbt', 'SQL', 'PostgreSQL', 'TimescaleDB'] },
+  { category: 'Infrastructure · Observability', items: ['Docker', 'Nginx', 'Linux', 'GitLab CI/CD', 'Prometheus', 'Grafana', 'Grafana Alloy'] },
   { category: 'Frontend', items: ['Vue'] },
-  { category: 'Database', items: ['PostgreSQL', 'TimescaleDB', 'pgvector', 'SQL'] },
-  { category: 'Data Engineering', items: ['Airflow', 'dbt'] },
-  { category: 'Monitoring', items: ['Grafana', 'Prometheus', 'Grafana Alloy'] },
-  { category: 'DevOps', items: ['Docker', 'Nginx', 'Linux', 'GitLab'] },
-  { category: 'AI · LLM', items: ['LangChain', 'RAG', 'vLLM', 'Claude Code'] },
 ]
 </script>
 
 <template>
-  <section id="skills" class="mx-auto max-w-4xl scroll-mt-24">
-    <h2 class="mb-6 text-2xl font-bold text-surface-900 dark:text-surface-0">Skills</h2>
+  <section id="skills" class="scroll-mt-24">
+    <h2 class="mb-2 text-2xl font-bold text-surface-900 dark:text-surface-0">Skills</h2>
+    <p class="mb-6 text-surface-600 dark:text-surface-300">데이터 처리와 서비스 운영에 활용한 기술입니다.</p>
     <Card>
       <template #content>
         <div class="flex flex-col divide-y divide-surface-200 dark:divide-surface-800">
