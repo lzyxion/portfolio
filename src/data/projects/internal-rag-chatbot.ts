@@ -8,7 +8,7 @@ export const internalRagChatbot: Project = {
     contribution: 100,
     contributionScope: 'RAG 파이프라인 · 백엔드 · 프론트 · 인프라 전담',
     repos: ['lzyxion/rocket-desk'],
-    tags: ['LangChain', 'RAG', 'vLLM', 'pgvector', 'FastAPI', 'React', 'PostgreSQL', 'Docker'],
+    tags: ['LangChain', 'RAG', 'vLLM', 'pgvector', 'FastAPI', 'React', 'PostgreSQL', 'Docker', '요구사항 분석', '이해관계자 커뮤니케이션'],
     summary:
       '외부 클라우드 LLM 을 쓸 수 없는 보안 요건 아래, 사내 GPU 서버에 자체 호스팅한 오픈 모델로 사내 문서를 근거로 답하는 RAG 챗봇을 전담 설계·구현한 프로젝트입니다.',
     problem: {
@@ -109,6 +109,7 @@ export const internalRagChatbot: Project = {
       'strict 강제 검색 + 인라인 [n] 출처 인용으로 무근거 답변(환각) 비율 25% → 4% 억제',
       'HWP·스캔 PDF(OCR) 멀티포맷 적재 + NAS 부서별 증분 동기화로 사내 문서 코퍼스 구축',
       'LangChain LCEL 파이프라인 + FastAPI SSE 스트리밍 · React(assistant-ui) UI·API 단일 이미지(:8000) 사내 서버 배포',
+      '사내 컨설팅팀의 문서 활용 요구를 반영해 부서별 검색 범위·엄격 검색 모드·답변 내 출처 인용 기능 구현',
     ],
     media: [
       {

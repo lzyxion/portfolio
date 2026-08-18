@@ -8,7 +8,7 @@ export const dataPlatform: Project = {
     contribution: 100,
     contributionScope: '백엔드 · 프론트엔드 · 인프라 · 파이프라인 전담',
     repos: ['lzyxion/dbt-sensor', 'lzyxion/sensor-gateway-portfolio'],
-    tags: ['Airflow', 'dbt', 'FastAPI', 'Vue.js', 'Docker', 'Nginx', 'GitLab CI/CD'],
+    tags: ['Airflow', 'dbt', 'FastAPI', 'Vue.js', 'Docker', 'Nginx', 'GitLab CI/CD', '프로젝트 문서화'],
     summary:
       '파이프라인 파편화와 Grafana 시각화의 한계를 계기로, Airflow·dbt 표준화 파이프라인과 멀티테넌시 API·사내 자체 관리 대시보드를 구축한 프로젝트입니다.',
     problem: {
@@ -98,6 +98,7 @@ export const dataPlatform: Project = {
       'Apache Airflow 기반 자동화 배치 파이프라인과 집계 DAG를 구축해 센서별 수기 집계 정의·수정 반복 작업 약 80% 감소',
       'dbt 를 도입하여 파편화된 제조 데이터 표준화 및 데이터 이상치 (Outlier) 정제 파이프라인 구현',
       'FastAPI·Casbin 기반 멀티테넌시 API에 테넌트별 연결 풀·요청 제한·Replica fallback을 구성하고, 사내 자체 관리 대시보드를 Docker·Nginx·GitLab CI/CD 배포까지 개발',
+      'Airflow·dbt 파이프라인의 구성과 운영 흐름을 프로젝트 문서로 정리하고, 구현 내용과 대조해 정확성 검토·보완',
     ],
     media: [
       {

@@ -12,13 +12,14 @@ const skillGroups: SkillGroup[] = [
   { category: 'Data Platform', items: ['Airflow', 'dbt', 'SQL', 'PostgreSQL', 'TimescaleDB'] },
   { category: 'Infrastructure · Observability', items: ['Docker', 'Nginx', 'Linux', 'GitLab CI/CD', 'Prometheus', 'Grafana', 'Grafana Alloy'] },
   { category: 'Frontend', items: ['Vue'] },
+  { category: 'Collaboration', items: ['요구사항 분석', '이해관계자 커뮤니케이션', '이슈 공유·조치 협업', '프로젝트 문서화'] },
 ]
 </script>
 
 <template>
   <section id="skills" class="scroll-mt-24">
     <h2 class="mb-2 text-2xl font-bold text-surface-900 dark:text-surface-0">Skills</h2>
-    <p class="mb-6 text-surface-600 dark:text-surface-300">데이터 처리와 서비스 운영에 활용한 기술입니다.</p>
+    <p class="mb-6 text-surface-600 dark:text-surface-300">데이터 처리와 서비스 운영, 협업에 활용한 기술입니다.</p>
     <Card>
       <template #content>
         <div class="flex flex-col divide-y divide-surface-200 dark:divide-surface-800">

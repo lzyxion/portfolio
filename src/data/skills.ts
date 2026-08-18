@@ -47,6 +47,12 @@ const SKILL_ICON_MAP: Record<string, string> = {
   JWT: 'logos:jwt-icon',
   Casbin: 'simple-icons:casbin',
 
+  // Collaboration
+  '요구사항 분석': 'mdi:clipboard-text-search-outline',
+  '이해관계자 커뮤니케이션': 'mdi:account-voice',
+  '이슈 공유·조치 협업': 'mdi:handshake-outline',
+  '프로젝트 문서화': 'mdi:file-document-edit-outline',
+
   // AI · Productivity
   'Claude Code': 'simple-icons:anthropic',
   LangChain: 'simple-icons:langchain',

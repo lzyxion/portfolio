@@ -16,6 +16,8 @@ export const infraMonitoring: Project = {
       'Grafana Alloy',
       'Prometheus',
       'VictoriaMetrics',
+      '이해관계자 커뮤니케이션',
+      '이슈 공유·조치 협업',
     ],
     summary:
       '업체 확장기에 한꺼번에 드러난 DB 과부하 · 트래픽 초과 비용 · Edge 장애를, 메트릭 진단 → 복제 격리 → 사전 알람의 순서로 구조적으로 분리·예방한 인프라 고도화 프로젝트입니다.',
@@ -116,6 +118,7 @@ export const infraMonitoring: Project = {
       '메인 DB CPU 과부하 (99%) 문제를 Prometheus 메트릭으로 진단하여 팀 내 복제 (Replication) 아키텍처 도입 근거 제시',
       '실시간 관제 대시보드 (Grafana) 의 데이터 소스를 Slave DB 로 이전 — Master DB CPU 사용량 안정화 (평균 25%) 및 네트워크 아웃바운드 트래픽 10Mbps 이하 유지로 초과 비용 개선',
       '현장 PC 에 Grafana Alloy 에이전트를 도입하여 호스트 메트릭 수집 및 임계치 알림 체계를 구축, 메모리 고갈 전 사전 조치로 장비 다운율 25% → 0% 예방',
+      '메모리 고갈 징후가 있는 현장 PC의 발생 시점·대상 장비·사용 추이를 서버 개발자에게 공유해 원인 점검과 조치가 빠르게 이어지도록 지원',
     ],
     media: [
       {

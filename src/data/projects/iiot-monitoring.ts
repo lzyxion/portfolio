@@ -5,7 +5,7 @@ export const iiotMonitoring: Project = {
     title: '스마트 팩토리 IIoT 시계열 데이터 최적화 및 통합 관제 대시보드 구축',
     period: '2023.11 ~ 2024.04',
     year: 1,
-    tags: ['TimescaleDB', 'Grafana', 'SQL'],
+    tags: ['TimescaleDB', 'Grafana', 'SQL', '요구사항 분석', '이해관계자 커뮤니케이션'],
     contribution: 35,
     contributionScope: '데이터 시각화 · 통합 관제 대시보드 구축 담당',
     summary:
@@ -106,6 +106,7 @@ export const iiotMonitoring: Project = {
       '연속집계 (Continuous Aggregates) 기능을 활용하여 수백만 건 규모의 통계/집계 쿼리 수행 시간 70% 이상 단축',
       '하이퍼테이블 청크 (Chunk) 단위 압축 (Compression) 정책 수립으로 데이터 저장 공간 80% 이상 절감',
       'Grafana 를 활용하여 제조 현장 맞춤형 IIoT 센서 데이터 실시간 대시보드 구축',
+      '업체 담당자와 소통해 현장에서 확인이 필요한 설비 상태·에너지 지표를 파악하고, 이를 통합 관제 대시보드에 반영',
     ],
     media: [
       {
